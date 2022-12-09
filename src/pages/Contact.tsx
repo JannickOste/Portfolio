@@ -9,7 +9,11 @@ type ContactFormState = {
     notification?: string
 }
 
-
+/**
+ * Renders a form that allows users to send a message to the default emailjs corespondent
+ *
+ * @returns {ReactElement} A React element representing the contact form.
+ */
 const ContactForm = () => 
 {
     emailjs.init(process.env.REACT_APP_EMAILJS_KEY as string);

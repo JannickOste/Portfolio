@@ -1,3 +1,4 @@
+import { skillInfo } from "../App";
 import SkillDisplay from "../components/elements/SkillDisplay";
 
 const Index = () => {
@@ -21,16 +22,7 @@ const Index = () => {
                     </p>
                 </div>
                 <div className="w-100">
-                    <SkillDisplay skills={[
-                        {name: "Javascript/Typescript", progress: 60},
-                        {name: "HTML/CSS", progress: 80},
-                        {name: "PHP", progress: 55},
-                        {name: "C#", progress: 85},
-                        {name: "Python", progress: 70},
-                        {name: "Java", progress: 45},
-                        {name: "C++", progress: 25},
-                        {name: "GIT", progress: 80}
-                    ]} />
+                    <SkillDisplay skills={skillInfo} />
                 </div>
             </article>
         </section>

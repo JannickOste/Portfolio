@@ -33,10 +33,10 @@ const MultipleChoiceQuestion = ({questions, onAnswer, disabled}:{questions:strin
 const TrueFalseQuestion = ({onAnswer, disabled}: {onAnswer:(answer:string) => void, disabled:boolean}) => {
     return (
     <div>
-        {["True", "False"].map(s => <>
-            <label htmlFor={s.toLocaleLowerCase()}>{s}:</label>
-            <input type="radio" name={s.toLocaleLowerCase()} id={s.toLocaleLowerCase()} value={s} onChange={(ev) => onAnswer(ev.target.value)} disabled={disabled} />
-        </>)}
+        {["True", "False"].map((v, i) => <div key={i}>
+            <label htmlFor={v.toLocaleLowerCase()}>{v}:</label>
+            <input type="radio" name={v.toLocaleLowerCase()} id={v.toLocaleLowerCase()} value={v} onChange={(ev) => onAnswer(ev.target.value)} disabled={disabled} />
+        </div>)}
     </div>)
 }
 
