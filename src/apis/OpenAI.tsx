@@ -6,21 +6,24 @@ class OpenAI
     private readonly maxTokens: number = 10;
     private readonly targetModel:string = "text-davinci-003";
 
-    private constructor()
+    constructor(apiKey:string|undefined, creditLimit:number)
     {
         this.client = new OpenAIApi(new Configuration({
-            apiKey: process.env.REACT_APP_OPENAI_KEY
+            apiKey: apiKey
         }));
+        
+        this.maxTokens = creditLimit;
     }
 
     private static _singleton: OpenAI;
     public static get Singleton()
     {
         if(this._singleton === undefined)
-            this._singleton = new OpenAI();
+            this._singleton = new OpenAI(process.env.REACT_APP_OPENAI_KEY, 10);
 
         return this._singleton;
     }
+
 
     public getResponse = (conversation: string) => this.client.createCompletion({
         model: this.targetModel, 

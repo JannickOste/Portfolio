@@ -11,6 +11,8 @@ type ChatState = {
     openaiUserKey?:string;
     openaiUserLimit?:number;
     error?:string;
+
+    openai?:OpenAI;
 }
 
 /**
@@ -23,14 +25,17 @@ const Chat = () => {
 
     useEffect(() => {
         const last = state.messages.at(-1);
-        if(last && last.from.toLowerCase() == "human")
+        if(last && last.from.toLowerCase() == "human" && state.openai)
             (async() => {
                 try
                 {
-                    const response = await OpenAI.Singleton.getResponse(state.messages.map(msg => `${msg.from}:\n${msg.message}`).join("\n"));
-                    setState({...state, messages: [...state.messages,
-                        {from: "AI", message: response.data.choices[0].text as string}
-                    ]});
+                    if(state.openai)
+                    {
+                        const response = await state.openai.getResponse(state.messages.map(msg => `${msg.from}:\n${msg.message}`).join("\n"));
+                        setState({...state, messages: [...state.messages,
+                            {from: "AI", message: response.data.choices[0].text as string}
+                        ]});
+                    }
                 } catch(e) 
                 {
                     const errorCodeRaw = (e as Error).message.split(" ").at(-1);
@@ -49,7 +54,10 @@ const Chat = () => {
                     setState({...state, error:message});
                 }
             })();
-    }, [state])
+    }, [state.messages])
+
+    if(process.env.REACT_APP_OPENAI_KEY)
+        setState({...state, openai: OpenAI.Singleton});
 
     return (
         <div className="bg-white border p-2" style={{borderRadius: 5}} >
@@ -57,9 +65,11 @@ const Chat = () => {
             process.env.REACT_APP_OPENAI_KEY === undefined && [state.openaiUserKey, state.openaiUserLimit].every(v => v === undefined)
                 ? (<ChatNoKeyForm 
                     onSubmit={(apiKey, creditLimit) => {
-                        setState({...state, openaiUserKey: apiKey, openaiUserLimit: creditLimit})
+                        setState({...state, openaiUserKey: apiKey, openaiUserLimit: creditLimit, openai: new OpenAI(apiKey, creditLimit)})
                         localStorage.setItem("openai_key", apiKey);
                         localStorage.setItem("openai_limit", `${creditLimit}`);
+                        alert(apiKey)
+                        
                     }} 
                     apiKey={localStorage.getItem("openai_key")}
                     limit={localStorage.getItem("openai_limit")}
@@ -79,7 +89,7 @@ const Chat = () => {
                         {state.error}
                     </div>) : (<></>)}
 
-                    <ChatUI messages={state.messages} onSend={(text) => setState({...state, messages: [...state.messages, {from: "Human", message: text}]})}  />
+                    <ChatUI messages={state.messages} onSend={(text) => setState({...state, error:"", messages: [...state.messages, {from: "Human", message: text}]})}  />
                 </>)
             }
         </div>)
