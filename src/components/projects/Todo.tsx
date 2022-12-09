@@ -21,8 +21,8 @@ type TodoItemProps = {
 
 const TodoItem = ({name, completed, index, onToggle}:TodoItemProps)=>  (
     <div className="border my-2 p-2 d-flex justify-content-between">
-        <span style={{textDecoration: completed ? "line-through" : "none"}}>{name}</span>
-        <input type="checkbox" checked={completed} onChange={(event) => onToggle(event.target.checked, index)}/>
+        <label htmlFor="todo" style={{textDecoration: completed ? "line-through" : "none"}}>{name}</label>
+        <input type="checkbox" name="todo" id="todo" checked={completed} onChange={(event) => onToggle(event.target.checked, index)}/>
     </div>
 )
 
