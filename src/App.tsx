@@ -2,6 +2,7 @@ import { createBrowserRouter, Outlet, RouteObject, RouterProvider } from "react-
 import { ProjectInfoProps } from "./components/elements/ProjectInfo";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
+import Master from "./components/layout/Master";
 import LocalStorage from "./components/projects/LocalStorage";
 import Pokemon from "./components/projects/Pokemon";
 import QuizApp from "./components/projects/QuizApp";
@@ -20,7 +21,7 @@ const projectDetails: ProjectInfoProps[] = [
     }, 
     {
         name: "Todo",
-        description: "",
+        description: "De bovenstaande code is voor een to-do app. Het bevat drie componenten, TodoItem, TodoInput en TodoList, die respectievelijk een enkele taak, het invoerveld en de lijst met taken weergeven. De state van de to-do's bevindt zich in de TodoApp component en wordt doorgegeven aan de nieuwe componenten via props. Child-to-parent communicatie wordt gebruikt om de state te updaten. Elke component staat in een aparte bestand.",
         renderElement: <TodoApp />
     },
     {
@@ -34,18 +35,6 @@ const projectDetails: ProjectInfoProps[] = [
         renderElement: <Pokemon />
     },
 ]
-
-const Master = () => {
-    return (
-        <>
-        <Header />
-        <main className="m-5" style={{minHeight: "100%"}}>
-            <Outlet />
-        </main>
-        <Footer />
-        </>
-    )
-}
 
 const routeObjects: RouteObject[] = [{
     path: "/", 

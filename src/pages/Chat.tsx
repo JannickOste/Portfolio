@@ -23,10 +23,13 @@ const Chat = () => {
     }, [state.messages])
 
     return (
-        <div className="bg-white border p-2" style={{borderRadius: 5}}>
+        <div className="bg-white border p-2" style={{borderRadius: 5}} >
+            <div className="bg-danger p-2 text-white text-center mb-2">
+                Chat is not working in live version, no API key supplied to avoid missuse
+            </div>
             <h1 className="h2 text-center">Chat</h1>
             <hr />
-            <div style={{minHeight: "10rem"}}>
+            <div style={{minHeight: "20rem"}}>
                 {state.messages.map(i => <ChatMessage from={i.from} message={i.message} />)}
 
             </div>
