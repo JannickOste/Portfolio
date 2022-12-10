@@ -5,6 +5,7 @@ class OpenAI
     private readonly client: OpenAIApi;
     private readonly maxTokens: number = 10;
     private readonly targetModel:string = "text-davinci-003";
+    
 
     constructor(apiKey:string|undefined, creditLimit:number)
     {

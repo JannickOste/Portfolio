@@ -1,5 +1,7 @@
-import { ReactElement, useState } from "react";
-import ProjectInfo, { ProjectInfoProps } from "../components/elements/ProjectInfo";
+import { ReactElement, useRef, useState } from "react";
+import { useFormAction, useSearchParams } from "react-router-dom";
+import ProjectInfo, { ProjectInfoProps } from "../components/elements/groups/projects/ProjectInfo";
+import ContentBox from "../components/layout/ContentBox";
 
 type ProjectsProps = {
     projects: ProjectInfoProps[]
@@ -15,11 +17,11 @@ type ProjectsProps = {
  */
 const Projects = ({projects}: ProjectsProps) => 
 {
+    //const params = Object.fromEntries(window.location.search.substring(1)?.split("&").map(s => s.split("=")).filter(i => i.length == 2));
+
     return (
         <section>
-            <article className="bg-white mb-3 p-2" style={{borderRadius: 5}}>
-                Klik op een hoofding om de info en het project te weergeven.
-            </article>
+            <ContentBox content={(<>Klik op een hoofding om de info en het project te weergeven.</>)}/>
 
             {projects.map((v, i) => <ProjectInfo name={v.name} description={v.description} renderElement={v.renderElement} sourceUri={v.sourceUri}/>)}
         </section>

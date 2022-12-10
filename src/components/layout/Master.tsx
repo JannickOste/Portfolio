@@ -20,13 +20,13 @@ const Master = ({routes}:MasterPageProps) => {
 
     return (
         <>
-        <Header navigation={navigation} onSearch={() => {}}/>
+            <Header navigation={routes} onSearch={() => {}}/>
 
-        <main className="m-5">
-            <Outlet />
-        </main>
+            <main className="m-5">
+                <Outlet />
+            </main>
 
-        <Footer />
+            <Footer />
         </>
     )
 }

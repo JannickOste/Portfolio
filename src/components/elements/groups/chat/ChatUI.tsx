@@ -1,4 +1,4 @@
-import TextInput from "../TextInput";
+import SearchBox from "../../forms/SearchBox";
 import ChatMessage, { ChatMessageProps } from "./ChatMessage";
 
 /**
@@ -17,7 +17,7 @@ const ChatUI = ({messages, onSend}:{messages:ChatMessageProps[], onSend:(text:st
             </div>
             <hr />
 
-            <TextInput 
+            <SearchBox 
                 buttonText="Send" 
                 onSubmit={onSend} 
                 formStyling={{width: "100%", display: "flex", height: "2rem"}} 

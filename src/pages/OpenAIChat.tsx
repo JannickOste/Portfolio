@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import ChatMessage, { ChatMessageProps } from "../components/elements/chat/ChatMessage";
 import OpenAI from "../apis/OpenAI";
-import ChatNoKeyForm from "../components/elements/chat/ChatNoKeyForm";
-import ChatUI from "../components/elements/chat/ChatUI";
+import { ChatMessageProps } from "../components/elements/groups/chat/ChatMessage";
+import ChatNoKeyForm from "../components/elements/groups/chat/ChatNoKeyForm";
+import ChatUI from "../components/elements/groups/chat/ChatUI";
+import ContentBox from "../components/layout/ContentBox";
 
 type ChatState = {
     initialized:boolean;
@@ -60,15 +61,14 @@ const Chat = () => {
         setState({...state, openai: OpenAI.Singleton});
 
     return (
-        <div className="bg-white border p-2" style={{borderRadius: 5}} >
-            {
-            process.env.REACT_APP_OPENAI_KEY === undefined && [state.openaiUserKey, state.openaiUserLimit].every(v => v === undefined)
+        <ContentBox content={(
+            <>
+                {process.env.REACT_APP_OPENAI_KEY === undefined && [state.openaiUserKey, state.openaiUserLimit].every(v => v === undefined)
                 ? (<ChatNoKeyForm 
                     onSubmit={(apiKey, creditLimit) => {
                         setState({...state, openaiUserKey: apiKey, openaiUserLimit: creditLimit, openai: new OpenAI(apiKey, creditLimit)})
                         localStorage.setItem("openai_key", apiKey);
                         localStorage.setItem("openai_limit", `${creditLimit}`);
-                        alert(apiKey)
                         
                     }} 
                     apiKey={localStorage.getItem("openai_key")}
@@ -80,7 +80,6 @@ const Chat = () => {
                         Ingelogd met een persoonlijke token - <u style={{cursor:"pointer"}} onClick={() => {
                             localStorage.setItem("openai_key", "");
                             localStorage.setItem("openai_limit", "");
-
                             setState({...state, openaiUserKey: undefined, openaiUserLimit: undefined})
                         }}>Uitloggen</u>
                     </div>) : (<></>)}
@@ -88,11 +87,10 @@ const Chat = () => {
                     {state.error ?  (<div className="border bg-danger text-white text-center py-2">
                         {state.error}
                     </div>) : (<></>)}
-
                     <ChatUI messages={state.messages} onSend={(text) => setState({...state, error:"", messages: [...state.messages, {from: "Human", message: text}]})}  />
-                </>)
-            }
-        </div>)
+                </>)}
+        </>)} />
+    )
 }
 
 export default Chat;

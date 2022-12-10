@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-export type HeaderNavLink = {
-    text:string;
-    to:string;
-}
+import { RouteObjectExtended } from "../../App";
 export type HeaderProps = {
-    navigation: HeaderNavLink[];
+    navigation: RouteObjectExtended[];
     onSearch:(text:string)=>void;
 }
 
@@ -33,7 +30,23 @@ const Header = ({navigation, onSearch}:HeaderProps) => {
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">    
-                    {navigation.map((v, i) => <li key={i} className="nav-item"><Link to={v.to?.length ? v.to : "/"} className="nav-link" >{v.text}</Link></li> )}
+                    {navigation.map((v, i) => {
+                        if(v.children && v.children.length)
+                            return (<li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {v.text}
+                                    </a>
+
+                                    
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        {v.children.map((sv, si) => (<a className="dropdown-item" href={sv.path}>{(sv as RouteObjectExtended).text}</a>))}
+                                        
+                                    </div>
+                            </li>)
+                        else return(
+                            <li key={i} className="nav-item"><Link to={v.path?.length ? v.path : "/"} className="nav-link" >{v.text}</Link></li> 
+                        )
+                    })}
                     </ul> 
                     
                 <form className="form-inline d-flex" style={{marginLeft: "auto"}} onSubmit={(ev) => {
@@ -41,7 +54,7 @@ const Header = ({navigation, onSearch}:HeaderProps) => {
                     if(state?.searchText)
                         onSearch(state?.searchText)
                 }}>
-                    <input className="form-control mr-sm-2 mx-2" type="search" placeholder="Search" aria-label="Search" value={state?.searchText} onChange={(ev) => setState({...state, searchText:ev.target.value})} />
+                    <input className="form-control mr-sm-2 mx-2" type="search" placeholder="Search project..." aria-label="Search" value={state?.searchText} onChange={(ev) => setState({...state, searchText:ev.target.value})} />
                     <input className="btn btn-outline-success my-2 my-sm-0 mx-2" type="submit" value="search" />
                 </form>
                 </div>
