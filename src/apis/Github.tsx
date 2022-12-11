@@ -151,8 +151,8 @@ class GithubAPI
     static getRepositories = async(name:string): Promise<GithubAPIRepositoryResult[]> => await (await fetch(`https://api.github.com/users/${name}/repos`)).json();
     static sanitizeDate = (input:string|undefined) => input?.split("T").map((s: string) => s.split("-").join(" ").replace("Z", "")).join(" - ");
 
-    static stringToDate = (dateString: string) => { // Doesnt return correct output when returning out, gotta look into
-        const [date, time] = dateString.split("T") as string[];
+    static stringToDate = (dateString: string|undefined) => { // Doesnt return correct output when returning out, gotta look into
+        const [date, time] = (dateString as string).split("T") as string[];
         let numeric = 0;
         const out = new Date();
         if(date.split("-").length >= 3)

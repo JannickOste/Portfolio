@@ -1,34 +1,30 @@
+import React from "react";
 import { Outlet } from "react-router-dom";
-import { RouteObjectExtended } from "../../App";
+import { RouteObjectExtended } from "../../RoutedObjectExtended";
 import Footer from "./Footer";
 import Header from "./Header";
 
 type MasterPageProps = {
     routes:RouteObjectExtended[];
+    onSearch:(text:string) => void;
 }
 
-/**
- * Renders a page with a header, main content area, and footer.
- *
- * @param {Object} props The props for the component.
- * @param {RouteObjectExtended[]} props.routes An array of objects representing the navigation items for the header. Each object should have a `text` and `path` property.
- * 
- * @returns {ReactElement} A React element representing the page.
- */
-const Master = ({routes}:MasterPageProps) => {
-    const navigation = routes.map(i => {return {text: i.text, to:i.path as string}});
+export default class Master extends React.Component<MasterPageProps>
+{
+    constructor(props: MasterPageProps)
+    {
+        super(props);
+    }
 
-    return (
+    public render = (): React.ReactNode => (
         <>
-            <Header navigation={routes} onSearch={() => {}}/>
+            <Header navigation={this.props.routes} onSearch={this.props.onSearch}/>
 
-            <main className="m-5">
+            <main className="m-md-3 m-sm-1">
                 <Outlet />
             </main>
 
             <Footer />
         </>
-    )
+    );
 }
-
-export default Master;

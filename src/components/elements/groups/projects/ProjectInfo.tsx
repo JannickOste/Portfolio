@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ContentBox from "../../../layout/ContentBox";
+import ContentBox from "../../ContentBox";
 
 export type ProjectInfoProps = {
     name: string, 

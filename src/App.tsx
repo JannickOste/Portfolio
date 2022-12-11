@@ -1,118 +1,92 @@
-import { createBrowserRouter, Outlet, RouteObject, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Master from "./components/layout/Master";
-import LocalStorage from "./components/projects/LocalStorage";
-import Pokemon from "./components/projects/Pokemon";
-import QuizApp from "./components/projects/QuizApp";
-import TodoApp from "./components/projects/Todo";
-import Chat from "./pages/OpenAIChat";
-import ContactForm from "./pages/Contact";
-import Index from "./pages/Index";
 import PageNotFound from "./pages/PageNotFound";
-import Projects from "./pages/Projects";
 import { ProjectInfoProps } from "./components/elements/groups/projects/ProjectInfo";
-import GithubSearch from "./pages/GithubSearch";
+import { RouteObjectExtended } from "./RoutedObjectExtended";
+import { useState } from "react";
+import React from "react";
 
+type ApplicationState = {
 
-//#region Application data.
-const projectDetails: ProjectInfoProps[] = [
-    {
-        name: "Quiz applicatie", 
-        description: "Deze code is een voorbeeld van een React applicatie, genaamd \"labo5-quizapp\". De applicatie maakt gebruik van useEffect om de fetch API te gebruiken om data op te halen. De applicatie heeft twee soorten vragen: multiple choice en true/false, en het maakt gebruik van twee componenten, genaamd MultipleChoiceQuestion en TrueFalseQuestion om deze vragen te tonen. Er is ook een Question component dat de juiste vraag component toont op basis van het type vraag. Als de gebruiker op een antwoord klikt, wordt er aan de hand van een kleur aangegeven of het antwoord juist of fout is en daarna wordt het antwoord getoond en kan de gebruiker niet meer van antwoord veranderen. Onderaan de pagina staat een knop met de tekst \"Load More\" die de volgende 10 vragen laadt. De vragen worden opnieuw opgehaald van de API en de vragen die al getoond of beantwoord zijn blijven in de lijst staan. Er is ook een loading indicator die getoond wordt totdat de data geladen is (ook bij het laden van de volgende 10 vragen). Alle state wordt bewaard in de QuizApp component en de Question componenten gebruiken de state van de QuizApp component via props en callbacks. De code maakt ook gebruik van de html-entities package om de html entities te decoderen die meegeleverd worden in de API. Dit zorgt ervoor dat speciale tekens zoals quotes goed weergegeven worden in plaats van als HTML entiteiten.",
-        renderElement: <QuizApp />,
-        sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/QuizApp.tsx"
-    }, 
-    {
-        name: "To-do lijst",
-        description: "De bovenstaande code is voor een to-do app. Het bevat drie componenten, TodoItem, TodoInput en TodoList, die respectievelijk een enkele taak, het invoerveld en de lijst met taken weergeven. De state van de to-do's bevindt zich in de TodoApp component en wordt doorgegeven aan de nieuwe componenten via props. Child-to-parent communicatie wordt gebruikt om de state te updaten. Elke component staat in een aparte bestand.",
-        renderElement: <TodoApp />,
-        sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Todo.tsx"
-    },
-    {
-        name: "Dad Joke",
-        description: "De code is een React-component genaamd DadJoke. Deze component laadt een \"awkward dad joke\" van de API https://icanhazdadjoke.com/. De functie loadJoke is een functie die deze data ophaalt. De functie wordt opgeroepen wanneer het component geladen wordt. Dit gebeurt met behulp van de useEffect hook. Eenmaal de data geladen is, toont de component de joke in een <div> element met behulp van een kaartje. Er is ook een \"New Joke\" knop onder de joke die de gebruiker kan gebruiken om een nieuwe joke op te halen. Er is ook een knop \"Set as favorite\" die de huidige joke opslaat in de localStorage van de browser. Bij het opstarten van de applicatie, wordt de laatst opgeslagen joke getoond. Dit gebeurt met behulp van de useEffect hook.",
-        renderElement: <LocalStorage />,
-        sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/LocalStorage.tsx"
-    },
-    {
-        name: "Pokedex",
-        description: `Deze code is een voorbeeld van een React component genaamd Pokemon. Het maakt gebruik van het useEffect hook om de fetch API te gebruiken om gegevens van Pokémon op te halen vanaf de PokeAPI. De component heeft ook een input veld waar gebruikers de naam van een Pokémon kunnen invoeren om de lijst te filteren op Pokémon met die naam. Er zijn ook twee input velden waarmee gebruikers het startnummer en het aantal Pokémon dat opgehaald moet worden kunnen aanpassen. De component toont vervolgens een lijst met Pokémon die voldoen aan de filtercriteria. De state van de component wordt bewaard in het state object en gebruikt useState om te updaten wanneer de gebruiker input invoert.`,
-        renderElement: <Pokemon />,
-        sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Pokemon.tsx"
-    },
-]
-
-export type RouteObjectExtended = RouteObject & { text:string; children?:RouteObjectExtended[]}
-
-const routes: RouteObjectExtended[] = 
-[
-    {
-        path: "",
-        element: <Index />,
-        text: "Home"
-    },
-    {
-        path: "",
-        text: "API\'s",
-        children: [
-            {
-                path: "/github",
-                text: "Github search",
-                element: <GithubSearch />
-            },
-            {
-                path: "/chat",
-                element: <Chat />,
-                text: "OpenAI Chat"
-            }
-        ]
-    },
-    {
-        path: "/projects", 
-        element: <Projects projects={projectDetails.sort((a, b) => a.name.localeCompare(b.name))}/>,
-        text: "Projecten"
-    },
-    {
-        path: "/contact",
-        element: <ContactForm />,
-        text: "Contact"
-    }
-]
-
-
-export const skillInfo = [
-    {name: "HTML", progress: 80},
-    {name: "CSS", progress: 60},
-    {name: "PHP", progress: 45},
-    {name: "GIT", progress: 80},
-    {name: "Java", progress: 45},
-    {name: "C#", progress: 85},
-    {name: "C++", progress: 25},
-    {name: "Python", progress: 70},
-    {name: "Javascript / Typescript", progress: 65},
-    {name: "MySQL", progress: 55},
-    {name: "Unity", progress: 50},
-    {name: "Autohotkey", progress: 40},
-    {name: "Bash", progress: 40},
-    {name: "DOS", progress: 20},
-    {name: "Software security", progress: 35}
-]
-
-
-//#endregion
-
-const router = createBrowserRouter([{
-    path: "/", 
-    element: <Master routes={routes} />,
-    children: routes,
-    errorElement: <PageNotFound />
-}]);    
-
-const App = () => {
-    return (
-        <>
-            <RouterProvider router={router} />  
-        </>
-    )
 }
 
-export default App;
+type ApplicationProps = {
+    routes:RouteObjectExtended[];
+    projects:ProjectInfoProps[];
+}
+
+/**
+ * Application is a React component that acts as the root component for the
+ * application.
+ *
+ * The `render` method returns the JSX for the component, which includes the
+ * `Master` component and all the application routes. If a route does not
+ * exist, the `PageNotFound` component is displayed.
+ *
+ * The `onApplicationSearch` method is called when the user submits a search
+ * query in the search box. The method searches for a match in the application
+ * routes and projects and navigates to the matching route or project if
+ * found. If no match is found, an error message is displayed.
+ */
+export default class Application extends React.Component<ApplicationProps, ApplicationState>
+{
+    state = {};
+
+    /**
+     * onApplicationSearch is an event handler that is called when the user
+     * submits a search query in the search box.
+     *
+     * This method searches for a match in the application routes and projects
+     * and navigates to the matching route or project if found. If no match is
+     * found, an error message is displayed.
+     *
+     * @param searchQuery The search query entered by the user.
+     */
+    private onApplicationSearch = (searchQuery: string) => {
+        searchQuery = searchQuery.toLocaleLowerCase();
+
+        const searchProjectMatch = () => {
+            for(let project of this.props.projects)
+                if(project.name.toLocaleLowerCase().includes(searchQuery))
+                    return "/projects#"+project.name.replace(" ", "").toLocaleLowerCase()
+                    
+            return "";
+        }
+        
+        const searchRouteMatch = (route:RouteObjectExtended) => 
+        {
+            if(route.text.toLocaleLowerCase().includes(searchQuery) || route.path?.includes(searchQuery))
+                return route.path as string;
+            else if(route.children)
+                for(let child of route.children)
+                    if(searchRouteMatch(child)?.length)
+                        return child.path as string;
+            
+            return "";
+        }
+        
+
+        let uri = "";
+        if((uri = searchProjectMatch()) || (uri = this.props.routes.map(route => searchRouteMatch(route)).filter(s => s.length)[0]))
+            return window.location.replace(uri);
+
+        alert("Geen zoekresultaten gevonden. (todo: dit veranderen naar betere popup)")
+    }
+
+    
+    /**
+     * render is a method that returns the JSX for the `Application` component.
+     *
+     * The JSX includes the `Master` component and all the application routes.
+     * If a route does not exist, the `PageNotFound` component is displayed.
+     *
+     * @returns The JSX for the `Application` component.
+     */
+    public render = (): React.ReactNode => (<RouterProvider router={createBrowserRouter([{
+        path: "/", 
+        element: <Master routes={this.props.routes} onSearch={this.onApplicationSearch} />,
+        children: this.props.routes,
+        errorElement: <PageNotFound />
+    }])} />)
+}
+
