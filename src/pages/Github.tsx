@@ -4,13 +4,14 @@ import SearchBox from "../components/elements/SearchBox";
 import GithubProfileCard from "../components/elements/groups/github/GithubProfileCard";
 import GithubRepoCard from "../components/elements/groups/github/GithubRepoCard";
 import ContentBox from "../components/elements/ContentBox";
+import SubpageLoader from "../components/elements/SubpageLoader";
 
 type GithubSearchResult = {
     profile: GithubProfileAPIResult;
     repositories: GithubAPIRepositoryResult[];
 }
 
-type GithubSearchState = {
+type GithubUIState = {
     profiles?:GithubSearchResult[];
     error?:string;
 }
@@ -27,9 +28,19 @@ type GithubSearchState = {
  *
  * If there is an error with the search, an error message is displayed.
  */
-export default class GithubSearch extends React.Component<{}, GithubSearchState>
+export default class Github extends React.Component<{}, GithubUIState>
 {
-    state:GithubSearchState = {}
+    state:GithubUIState = {}
+    private get pageMapping() 
+    {
+        return [
+            {
+                path: "profiles",
+                text: "profiel zoeken",
+                element: () => this.getProfileSearchUI()
+            }
+        ]
+    }
 
     /**
      * getProfileSearchHeader is a method that returns the JSX for the search
@@ -107,6 +118,14 @@ export default class GithubSearch extends React.Component<{}, GithubSearchState>
         />
     ) : [<></>]);
 
+    private getProfileSearchUI = () => (
+        <>
+            {this.getProfileSearchHeader()}
+            {this.state.error ? <ContentBox content={(<div className="bg-danger p-2 text-center text-white">{this.state.error}</div>)} /> : (<></>) }
+                {this.getGithubProfileElements()}
+        </>
+    )
+
     /**
      * render is a method that returns the JSX for the `GithubSearch` component.
      *
@@ -119,12 +138,6 @@ export default class GithubSearch extends React.Component<{}, GithubSearchState>
      * @returns The JSX for the `GithubSearch` component.
      */
     public render = (): React.ReactNode => {
-        return (
-            <>
-                {this.getProfileSearchHeader()}
-                {this.state.error ? <ContentBox content={(<div className="bg-danger p-2 text-center text-white">{this.state.error}</div>)} /> : (<></>) }
-                    {this.getGithubProfileElements()}
-            </>
-        )   
+        return (<SubpageLoader pages={this.pageMapping} />)
     }
 }

@@ -4,6 +4,8 @@ type TextInputProps = {
     placeholder?:string;
     buttonText:string;
 
+    disabled?:boolean;
+
     formStyling?:React.CSSProperties;
     formClassName?:string;
 
@@ -26,7 +28,7 @@ type TextInputProps = {
  * @param buttonStyling - Styles to be applied to the submit button.
  * @param formStyling - Styles to be applied to the form element.
  */
-const SearchBox = ({placeholder, onSubmit, buttonText, textboxStyling, buttonStyling, formStyling, textboxClassName, buttonClassName, formClassName}: TextInputProps) => 
+const SearchBox = ({placeholder, onSubmit, buttonText, textboxStyling, buttonStyling, formStyling, textboxClassName, buttonClassName, formClassName, disabled}: TextInputProps) => 
 {
     const [state, setState] = useState<{text:string}>({text: ""});
 
@@ -35,8 +37,8 @@ const SearchBox = ({placeholder, onSubmit, buttonText, textboxStyling, buttonSty
             ev.preventDefault();
             onSubmit(state?.text)}
         }>      
-            <input type="text" placeholder={placeholder} className={textboxClassName} style={textboxStyling} onChange={(ev) => setState({...state, text: ev.target.value})} />
-            <input type="submit" value={buttonText} className={buttonClassName} style={buttonStyling} />
+            <input type="text"   disabled={disabled} placeholder={placeholder} className={textboxClassName} style={textboxStyling} onChange={(ev) => setState({...state, text: ev.target.value})} />
+            <input type="submit" disabled={disabled} value={buttonText} className={buttonClassName} style={buttonStyling} />
         </form>
     )
 }

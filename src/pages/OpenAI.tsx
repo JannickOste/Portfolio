@@ -1,61 +1,111 @@
 import React from "react";
-import OpenAI from "../apis/OpenAIAPI";
+import OpenAI, { GPT3Model } from "../apis/OpenAIAPI";
 import { ChatMessageProps } from "../components/elements/groups/openai/chat/ChatMessage";
-import ChatNoKeyForm from "../components/elements/groups/openai/chat/ChatNoKeyForm";
+import OpenAINoKey from "../components/elements/groups/openai/OpenAINoKey";
 import ChatUI from "../components/elements/groups/openai/chat/ChatUI";
 import ContentBox from "../components/elements/ContentBox";
+import VerticalMenu from "../components/elements/VerticalMenu";
+import ImageGeneratorUI, { ImageGeneratorResult } from "../components/elements/groups/openai/image/ImageGeneratorUI";
+import Message, { MessageLevel } from "../components/elements/Message";
+import { RouteObjectExtended } from "../RoutedObjectExtended";
+import { RouteObject } from "react-router-dom";
 
 type ChatProps = {}
 type ChatState = {
-    initialized?:boolean;
     messages: ChatMessageProps[];
+    generated:ImageGeneratorResult[];
 
     openaiUserKey?:string;
     openaiUserLimit?:number;
+    
+    page:string;
+    disabled?:boolean;
+    message?:string
     error?:string;
-    page?:string;
+}
 
-    openai?:OpenAI;
+type OpenAIMainMenuEntry = {
+    path:string;
+    text:string;
+    element:() => JSX.Element
 }
 
 export default class OpenAIPage extends React.Component<ChatProps, ChatState>
 {
-    state:ChatState = {messages:[], page: "no_key"}
-    //#region subPageMapping
-    private readonly notUserAccesible = ["no_key", "main", "page_not_found"];
-    private readonly elementMapping = Object.fromEntries([
-        [
-            "no_key", () => <ContentBox content={<ChatNoKeyForm 
-                apiKey={localStorage.getItem("openai_key")}
-                limit={localStorage.getItem("openai_limit")}
-                onSubmit={(apiKey, creditLimit) => 
-                    this.setState({...this.state, 
-                        openaiUserKey: apiKey, 
-                        openaiUserLimit: creditLimit, 
+    state:ChatState = {messages:[], page: "no_key", generated:[]}
+    //#region Sub-page mapping
+    private readonly routeFilters = ["main", "page_not_found", "no_key"];
+    private readonly customRouterObjects: OpenAIMainMenuEntry[] = [];
 
-                        openai: new OpenAI(apiKey, creditLimit)
-                    }, () => {
+    constructor(props: ChatProps)
+    {
+        super(props);
+        this.customRouterObjects = [
+            {
+                path: "page_not_found",
+                text: "Pagina niet gevonden",
+                element: () => <ContentBox content={<div className="d-flex justify-content-center align-items-center">
+                    Er loopt een fout op om de pagina te laden, <u style={{cursor: "pointer"}} onClick={() => this.setState({...this.state, page: "main"})}>klik</u> hier om terug naar het hoofdmenu te gaan.
+                </div>} />
+            },
+            {
+                path: "no_key", 
+                text: "login",
+                element: () => <ContentBox content={(
+                    <OpenAINoKey 
+                    onSubmit={(apiKey, creditLimit) => {
+                        this.setState({...this.state, 
+                            openaiUserKey: apiKey, 
+                            openaiUserLimit: creditLimit
+                        })
+    
                         localStorage.setItem("openai_key", apiKey);
                         localStorage.setItem("openai_limit", `${creditLimit}`);
-                    })
-                } 
-            />} />
-        ],
-        [
-            "page_not_found", () => <ContentBox content={<div className="d-flex justify-content-center align-items-center">
-                Er loopt een fout op om de pagina te laden, <u style={{cursor: "pointer"}} onClick={() => this.setState({...this.state, page: "main"})}>klik</u> hier om terug naar het hoofdmenu te gaan.
-            </div>} />
-        ],
-        [
-            "chat", () => <ContentBox content={<ChatUI messages={ this.state.messages } onSend={(text) => {
-                const messagesUpdates: ChatMessageProps[] = [...this.state.messages, {from: "Human", message:text}]
-                this.setState({...this.state, messages: messagesUpdates}, this.onMessageSend)
-            }}  />} />
+                    }}
+                    apiKey={localStorage.getItem("openai_key")}
+                    limit={localStorage.getItem("openai_limit")}
+                    />
+                )} />
+            }, 
+            {
+                path: "main",
+                text: "hoofdmenu", 
+                element: () => <VerticalMenu entries={
+                    this.customRouterObjects.filter(route => !this.routeFilters.includes(route.path)).map(route => {
+                        return {
+                            text:route.text[0].toUpperCase() + route.text.slice(1, route.text.length), 
+                            onclick: () => this.setState({...this.state, page:route.path})
+                        }
+                    }
+                )} />
+            },
+            {
+                path: "chat",
+                text: "chat",
+                element: () => <ContentBox content={<ChatUI messages={ this.state.messages } onSend={(text) => {
+                    const messagesUpdates: ChatMessageProps[] = [...this.state.messages, {from: "Human", message:text}]
+                    this.setState({...this.state, messages: messagesUpdates}, this.onChatMessageSend)
+                }}  />} />
+            },
+            {
+                path: "generate_image", 
+                text: "afbeelding genereren",
+                element: () => <ImageGeneratorUI images={this.state.generated} onImageGenerate={this.onImageGenerate} /> 
+            }
+
         ]
-    ])
+    }
     //#endregion
 
-    //#region Events
+    private getOpenAIInstance = () => {
+        if(process.env.REACT_APP_OPENAI_KEY)
+            return OpenAI.Singleton;
+        else if(this.state.openaiUserKey && this.state.openaiUserLimit)
+            return new OpenAI({props:{apiKey: this.state.openaiUserKey, creditLimit:this.state.openaiUserLimit, model: GPT3Model.TEXT_DAVINCI_V3}});
+    }
+
+
+    //#region ChatUI
     /**
      * Updates the chat history and sends a message to the OpenAI API
      *
@@ -64,56 +114,58 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
      * `fetchAPIChatResponse` method to retrieve a response from the
      * OpenAI API and update the chat history.
      */
-    private onMessageSend = async() => {
+    private onChatMessageSend = async() => {
         const last = this.state.messages.at(-1);
-        if(!this.state.openai)
-            return this.setState({...this.state, error: "Failed getting connection to OpenAI"})
-        else if(!last)
+
+
+        if(!last)
             return this.setState({...this.state, error: "Failed reading last message"})
 
         if(last.from.toLowerCase() == "human")
-            return await this.fetchAPIChatResponse();
-    }
-
-
-    /**
-     * Retrieves a response from the OpenAI API and updates the chat history
-     *
-     * This method sends the current chat history to the OpenAI API and
-     * retrieves a response. It then updates the chat history with the
-     * response from the API. If there is an error, it sets the `error`
-     * property in the component's state with an error message.
-     */
-    private fetchAPIChatResponse = async() => {
-        try
         {
-            if(this.state.openai)
+            try
             {
-                const response = await this.state.openai.getResponse(this.state.messages.map(msg => `${msg.from}:\n${msg.message}`).join("\n"));
-                this.setState({...this.state, messages: [...this.state.messages,
-                    {from: "AI", message: response.data.choices[0].text as string}
-                ], error: ""});
+                const openai = this.getOpenAIInstance();
+                if(openai)
+                {
+                    const response = await openai.getResponse(this.state.messages.map(msg => `${msg.from}:\n${msg.message}`).join("\n"));
+                    this.setState({...this.state, messages: [...this.state.messages,
+                        {from: "AI", message: response.data.choices[0].text as string}
+                    ], error: ""});
+                    
+                }
+            } catch(e) 
+            {
+                const errorCodeRaw = (e as Error).message.split(" ").at(-1);
+                let message = "";
+                switch(errorCodeRaw? parseInt(errorCodeRaw) : -1)
+                {
+                    case 401:
+                        message = "Verkeerde openai API code";
+                        break;
+                    case -1:
+                    default:
+                        message =  "Er is een ongekende fout opgetreden...";
+                        break;
+                }
                 
+                this.setState({...this.state, error:message});
             }
-        } catch(e) 
-        {
-            const errorCodeRaw = (e as Error).message.split(" ").at(-1);
-            let message = "";
-            switch(errorCodeRaw? parseInt(errorCodeRaw) : -1)
-            {
-                case 401:
-                    message = "Verkeerde openai API code";
-                    break;
-                case -1:
-                default:
-                    message =  "Er is een ongekende fout opgetreden...";
-                    break;
-            }
-            
-            this.setState({...this.state, error:message});
         }
     }
 
+    //#endregion
+
+    //#region Image Generate 
+    private onImageGenerate = async(text:string) => {
+        this.setState({...this.state, message:"Afbeelding word gegenereerd...."})
+        const response = await this.getOpenAIInstance()?.getImage(text);
+
+        const uriOut = response?.data.data[0].url;
+        if(uriOut)
+            this.setState({...this.state, generated: [{text:text, uri: uriOut}, ...this.state.generated], message: "Afbeelding met success aangemaakt!"})
+        else this.setState({...this.state, error:"Er ging iets mis tijdens het genereren van de afbeelding", message: ""})
+    }
     //#endregion
     
     /**
@@ -127,23 +179,7 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
      * @returns {React.ReactNode} The React element to render
      */
     public render = (): React.ReactNode => {
-        if(process.env.REACT_APP_OPENAI_KEY === undefined && [this.state.openaiUserKey, this.state.openaiUserLimit].every(v => v === undefined))
-        {
-            return(<ChatNoKeyForm 
-                onSubmit={(apiKey, creditLimit) => {
-                    this.setState({...this.state, 
-                        openaiUserKey: apiKey, 
-                        openaiUserLimit: creditLimit, 
-                        openai: new OpenAI(apiKey, creditLimit)
-                    })
-
-                    localStorage.setItem("openai_key", apiKey);
-                    localStorage.setItem("openai_limit", `${creditLimit}`);
-                }} 
-                apiKey={localStorage.getItem("openai_key")}
-                limit={localStorage.getItem("openai_limit")}
-            />)
-        } else if(this.state.page === "no_key") 
+        if(this.getOpenAIInstance() && this.state.page === "no_key") 
             this.setState({...this.state, page: "main"});
 
         return this.renderSubPage();
@@ -156,54 +192,45 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
      * @returns {React.ReactNode} The React element to render
      */
     private renderSubPage = ():React.ReactNode => {
+        
+        let route = this.customRouterObjects.find(route => route.path === this.state.page);
+        if(!route) 
+            route = this.customRouterObjects.find(route => route.path === "page_not_found");
+
+        
         const Header = () => <>
-            <ContentBox content={<p className="h1 text-center mb-2">OpenAI {this.state.page}</p>} />
+            <ContentBox content={<p className="h1 text-center mb-2">OpenAI {route?.path ? route?.text : "error"}</p>} />
 
             {this.state.openaiUserKey && this.state.openaiUserLimit ? (<div className="border bg-success text-white text-center py-2">
                 Ingelogd met een persoonlijke token - <u style={{cursor:"pointer"}} onClick={() => {
                     localStorage.setItem("openai_key", "");
                     localStorage.setItem("openai_limit", "");
-                    this.setState({...this.state, openaiUserKey: undefined, openaiUserLimit: undefined})
+                    this.setState({...this.state, openaiUserKey: undefined, openaiUserLimit: undefined, page:"no_key", error:""})
                 }}>Uitloggen</u>
             </div>) : (<></>)}
             
-            {this.state.error ?  (<div className="border bg-danger text-white text-center py-2">
-                {this.state.error}
-            </div>) : (<></>)}
+            {this.state.error ? <Message level={MessageLevel.ERROR} text={this.state.error} /> : <></>}
+            {this.state.message ? <Message level={MessageLevel.SUCCES} text={this.state.message} /> : <></>}
         </>;
+    
+        let Body = route ? route.element : () => <></>;
 
-        let Body = () => <></>;
         let Footer = () => (
             <>
-            {this.notUserAccesible.includes(this.state.page as string) ?  <></> :<ContentBox className="d-flex justify-content-end" content={<>
-                <input type="button" className="btn btn-success d-block ml-auto" onClick={() => this.setState({...this.state, page: "main"})} value="Hoofdmenu" />
+            {this.routeFilters.includes(this.state.page as string) ?  <></> :<ContentBox className="d-flex justify-content-end" content={<>
+                <input type="button" className="btn btn-success d-block ml-auto" onClick={() => this.setState({...this.state, error:"", page: "main"})} value="Hoofdmenu" />
             </>} />}
             </>
         )
-        
 
-        switch(this.state.page)
-        {
-            case "main":
-                // Should be defined here, otherwise you don't have access to elementmapping for dynamic loading.
-                Body = () => <ContentBox content={
-                    <div className="d-flex flex-column">
-                        {Object.keys(this.elementMapping).filter(s => !this.notUserAccesible.includes(s)).map(s => 
-                            <input type="button" className="btn btn-success" value={s} onClick={(ev) => this.setState({...this.state, page:s})} />
-                        )}
-                    </div>
-                } />;
-                break;
-
-            default: 
-                if(this.state.page && Object.keys(this.elementMapping).includes(this.state.page))
-                    Body = this.elementMapping[this.state.page as string];
-                else Body = this.elementMapping["page_not_found"];   
-        }
+                
+    
 
         return (<>
             <Header />
-            <Body />
+            <div className="my-3">
+                <Body />
+            </div>
             <Footer />
         </>)
     }

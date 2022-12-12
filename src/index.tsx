@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import Index from './pages/Index';
-import GithubSearch from './pages/GithubSearch';
+import Github from './pages/Github';
 import OpenAIPage from './pages/OpenAI';
 import Projects from './pages/Projects';
 import ContactForm from './pages/Contact';
@@ -74,9 +74,6 @@ const skillDisplays: {name:string, entries:SkillBarProps[]}[] = [
       ]
   }
 ]
-var docWidth = document.documentElement.offsetWidth;
-
-
 const routes: RouteObjectExtended[] = 
 [
     {
@@ -89,12 +86,12 @@ const routes: RouteObjectExtended[] =
         text: "API\'s",
         children: [
             {
-                path: "/github",
-                text: "Github profielen",
-                element: <GithubSearch />
+                path: "/api/github",
+                text: "Github",
+                element: <Github />
             },
             {
-                path: "/chat",
+                path: "/api/openai",
                 element: <OpenAIPage />,
                 text: "OpenAI"
             }

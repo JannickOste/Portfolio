@@ -16,7 +16,6 @@ type ProjectsProps = {
  */
 export default class Projects extends React.Component<ProjectsProps>
 {
-
     public render = (): React.ReactNode => (
         <section>
             <ContentBox content={(<>Klik op een hoofding om de info en het project te weergeven.</>)}/>

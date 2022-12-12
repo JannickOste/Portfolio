@@ -16,7 +16,7 @@ export default class ChatUI extends React.Component<ChatUIProps, ChatUIState>
     public render = ():React.ReactNode => (
          <>
             <hr />
-            <div>
+            <div>   
                 {this.props.messages.map((v, i) => <ChatMessage key={i} from={v.from} message={v.message} background={v.from !== "AI" ? "success" : "info"} alignEnd={v.from !== "AI"}/>)}
             
             </div>

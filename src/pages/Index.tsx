@@ -5,6 +5,7 @@ import GithubRepoCard from "../components/elements/groups/github/GithubRepoCard"
 import { SkillBarProps } from "../components/elements/groups/skills/SkillBar";
 import SkillDisplay from "../components/elements/groups/skills/SkillDisplay";
 import ContentBox from "../components/elements/ContentBox";
+import Message, { MessageLevel } from "../components/elements/Message";
 
 
 type IndexProps = {
@@ -71,9 +72,11 @@ export default class Index extends React.Component<IndexProps, IndexState>
      * @returns The JSX for the `Index` component.
      */
     public render = (): React.ReactNode => {
+        
         return (
             <div className="row-lg d-md-flex justify-content-lg-between flex-md-column flex-lg-row">
             <div className="col-lg-6 d-lg-flex flex-column justify-content-between">
+                <Message level={MessageLevel.WARNING} text="Website in development, features zullen nog wijzigen!" className="mb-5" />
                 <ContentBox header="Introductie"content={(
                     <>
                     <img src="./me.png" about="Author image" className="d-none d-xl-block  float-md-end"  />
@@ -93,7 +96,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
                 )} />
 
 
-                <ContentBox header="Laaste 5 geupdate repositories"  content={(
+                <ContentBox header="Laaste 5 geupdate repositories" className="mt-sm-5" content={(
                     <>
                         {this.state.repoError ? <>Er ging iets miss bij het laden van de github data...</> : <></>}
                         {this.state.repositories.sort((a, b) => GithubAPI.stringToDate(a.updated_at as string).getTime() < GithubAPI.stringToDate(b.updated_at as string).getTime() ? 1 : -1).slice(0, 5).map(repo => (<GithubRepoCard repo={repo} />))}
@@ -118,7 +121,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
                 )} />
 
                 {this.props.skills.map((display, rootI) => {
-                    return (<ContentBox key={rootI} header={display.name} className="w-md-100 w-100 mt-sm-5" content={(<SkillDisplay skills={display.entries} />)} />)
+                    return (<ContentBox key={rootI} header={display.name} className={`w-md-100 w-100 mt-sm-5`} content={(<SkillDisplay skills={display.entries} />)} />)
                 })}
             </div>
 

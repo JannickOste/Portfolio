@@ -13,7 +13,7 @@ type ChatNoKeyFormProps = {
     limit:string|null;
 }
 
-export default class ChatNoKeyForm extends React.Component<ChatNoKeyFormProps, ChatNoKeyFormState>
+export default class OpenAINoKey extends React.Component<ChatNoKeyFormProps, ChatNoKeyFormState>
 {
     state:ChatNoKeyFormState = {creditLimit: 150}
 
@@ -27,7 +27,6 @@ export default class ChatNoKeyForm extends React.Component<ChatNoKeyFormProps, C
 
     }
     public render = (): React.ReactNode => {
-
         return (<>
             <div className="bg-danger p-2 text-white text-center mb-2">
                 No OpenAI key found, disabled for live preview, optionaly provide your own key below with a max credit limit 
