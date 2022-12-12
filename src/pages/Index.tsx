@@ -76,7 +76,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
         return (
             <div className="row-lg d-md-flex justify-content-lg-between flex-md-column flex-lg-row">
             <div className="col-lg-6 d-lg-flex flex-column justify-content-between">
-                <Message level={MessageLevel.WARNING} text="Website in development, features zullen nog wijzigen!" className="mb-5" />
+                <Message level={MessageLevel.WARNING} content="Website in development, features zullen nog wijzigen!" className="mb-5" />
                 <ContentBox header="Introductie"content={(
                     <>
                     <img src="./me.png" about="Author image" className="d-none d-xl-block  float-md-end"  />

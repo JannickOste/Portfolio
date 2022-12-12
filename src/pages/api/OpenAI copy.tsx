@@ -1,14 +1,13 @@
 import React from "react";
-import OpenAI, { GPT3Model } from "../apis/OpenAIAPI";
-import { ChatMessageProps } from "../components/elements/groups/openai/chat/ChatMessage";
-import OpenAINoKey from "../components/elements/groups/openai/OpenAINoKey";
-import ChatUI from "../components/elements/groups/openai/chat/ChatUI";
-import ContentBox from "../components/elements/ContentBox";
-import VerticalMenu from "../components/elements/VerticalMenu";
-import ImageGeneratorUI, { ImageGeneratorResult } from "../components/elements/groups/openai/image/ImageGeneratorUI";
-import Message, { MessageLevel } from "../components/elements/Message";
-import { RouteObjectExtended } from "../RoutedObjectExtended";
 import { RouteObject } from "react-router-dom";
+import OpenAI, { GPT3Model } from "../../apis/OpenAIAPI";
+import ContentBox from "../../components/elements/ContentBox";
+import { ChatMessageProps } from "../../components/elements/groups/openai/chat/ChatMessage";
+import ChatUI from "../../components/elements/groups/openai/chat/ChatUI";
+import ImageGeneratorUI, { ImageGeneratorResult } from "../../components/elements/groups/openai/image/ImageGeneratorUI";
+import OpenAINoKey from "../../components/elements/groups/openai/OpenAINoKey";
+import Message, { MessageLevel } from "../../components/elements/Message";
+import VerticalMenu from "../../components/elements/VerticalMenu";
 
 type ChatProps = {}
 type ChatState = {
@@ -218,8 +217,8 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
                 }}>Uitloggen</u>
             </div>) : (<></>)}
             
-            {this.state.error ? <Message level={MessageLevel.ERROR} text={this.state.error} /> : <></>}
-            {this.state.message ? <Message level={MessageLevel.SUCCES} text={this.state.message} /> : <></>}
+            {this.state.error ? <Message level={MessageLevel.ERROR} content={this.state.error} /> : <></>}
+            {this.state.message ? <Message level={MessageLevel.SUCCES} content={this.state.message} /> : <></>}
         </>;
     
         let Body = route ? route.element : () => <></>;

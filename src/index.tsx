@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import Index from './pages/Index';
-import Github from './pages/Github';
-import OpenAIPage from './pages/OpenAI';
+import Github from './pages/api/Github';
 import Projects from './pages/Projects';
 import ContactForm from './pages/Contact';
 import { ProjectInfoProps } from './components/elements/groups/projects/ProjectInfo';
@@ -14,6 +13,7 @@ import Pokemon from './components/projects/Pokemon';
 import { SkillBarProps } from './components/elements/groups/skills/SkillBar';
 import { RouteObjectExtended } from './RoutedObjectExtended';
 import Application from './App';
+import OpenAIPage from './pages/api/OpenAI';
 
 //#region Application data.
 const projectDetails: ProjectInfoProps[] = [

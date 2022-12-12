@@ -10,7 +10,7 @@ export enum MessageLevel
 }
 
 export default class Message extends React.Component<{
-    text:string; 
+    content:string|JSX.Element; 
     level:MessageLevel;
     className?:string;
 }>
@@ -19,7 +19,7 @@ export default class Message extends React.Component<{
 
         return (<ContentBox className={this.props.className} content={
             <div className={`border bg-${this.props.level} text-${[MessageLevel.WARNING].includes(this.props.level) ? "dark" : "light"} text-center py-2`}>
-                {this.props.text}
+                {this.props.content}
             </div>
         } />);
     }

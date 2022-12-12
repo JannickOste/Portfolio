@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import GithubAPI, { GithubAPIRepositoryResult, GithubProfileAPIResult } from "../apis/Github";
-import SearchBox from "../components/elements/SearchBox";
-import GithubProfileCard from "../components/elements/groups/github/GithubProfileCard";
-import GithubRepoCard from "../components/elements/groups/github/GithubRepoCard";
-import ContentBox from "../components/elements/ContentBox";
-import SubpageLoader, { SubPageLayoutComponentProps } from "../components/elements/SubpageLoader";
-import Message, { MessageLevel } from "../components/elements/Message";
+import GithubAPI, { GithubAPIRepositoryResult, GithubProfileAPIResult } from "../../apis/Github";
+import SearchBox from "../../components/elements/SearchBox";
+import GithubProfileCard from "../../components/elements/groups/github/GithubProfileCard";
+import GithubRepoCard from "../../components/elements/groups/github/GithubRepoCard";
+import ContentBox from "../../components/elements/ContentBox";
+import SubpageLoader, { SubPageLayoutComponentProps } from "../../components/elements/SubpageLoader";
+import Message, { MessageLevel } from "../../components/elements/Message";
 import { Link } from "react-router-dom";
 
 type GithubProfileSearchResult = {
@@ -58,10 +58,16 @@ export default class Github extends React.Component<{}, GithubUIState>
                         />
                     </>} />
                         
-                    {this.state.repositories ? this.state.repositories.map(repo => <ContentBox className="my-2" content={<>
-                        
-                        <GithubRepoCard  repo={repo} />
-
+                    {this.state.repositories ? this.state.repositories.map((repo, i) => <ContentBox key={i} className="my-2" content={<>
+                        <div className="row">
+                            <div className="col-1 d-flex justify-content-center align-self-center" style={{height: "100%"}}>
+                                #{i+1}
+                            </div>
+                            <div className="col-10">
+                                
+                                <GithubRepoCard repo={repo} />
+                            </div>
+                        </div>
                     </>
                     } />) : <></>}
                 </> 
@@ -76,7 +82,7 @@ export default class Github extends React.Component<{}, GithubUIState>
             <strong className="h1">Github {text}</strong>
         </>} />
             
-        {this.state.error ? <Message level={MessageLevel.ERROR} text={this.state.error} /> : <></>}
+        {this.state.error ? <Message level={MessageLevel.ERROR} content={this.state.error} /> : <></>}
         </>)
     }
 

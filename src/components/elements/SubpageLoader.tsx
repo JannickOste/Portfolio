@@ -5,9 +5,9 @@ import VerticalMenu from "./VerticalMenu";
 export type SlimRouteProps = {path:string; text:string; element:() => JSX.Element }
 
 export type SubPageLayoutComponentProps = {
-    text?:string;
-    path?:string;
-    triggerMainMenu?:()=>void
+    text:string;
+    path:string;
+    triggerMainMenu:()=>void
 }
 
 export type SubpageLoaderProps = {
@@ -19,7 +19,7 @@ export type SubpageLoaderProps = {
 }
 
 
-const MAIN_MENU_LABEL = "";
+export const MAIN_MENU_LABEL = "";
 export default class SubpageLoader extends React.Component <SubpageLoaderProps, {currentPage: string}>
 {
     state = {currentPage: MAIN_MENU_LABEL}
@@ -30,7 +30,7 @@ export default class SubpageLoader extends React.Component <SubpageLoaderProps, 
     {
         const {Header, Footer} = {Header: this.props.header, Footer: this.props.footer}   
         let Body = () => <VerticalMenu entries={
-            this.props.pages.filter(route => !(this.props.routeFilters ? this.props.routeFilters : []).includes(route.path)).map(route => {
+            this.props.pages.sort((a,b) => a.text.localeCompare(b.text)).filter(route => !(this.props.routeFilters ? this.props.routeFilters : []).includes(route.path)).map(route => {
                 return {
                     text:route.text[0].toUpperCase() + route.text.slice(1, route.text.length), 
                     onclick: () => this.setState({...this.state, currentPage:route.path})
@@ -51,13 +51,13 @@ export default class SubpageLoader extends React.Component <SubpageLoaderProps, 
         }
         
         return (<>
-            {Header ? <Header text={route?.text} path={route?.path} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
+            {Header ? <Header text={(route?.text ? route.text : "")} path={(route?.path ? route.path : "")} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
 
             <div className="my-3">
                 <Body />
             </div>
 
-            {Footer ? <Footer text={route?.text} path={route?.path} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
+            {Footer ? <Footer text={(route?.text ? route.text : "")} path={(route?.path ? route.path : "")} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
         </>)
     }
 }
