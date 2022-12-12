@@ -159,12 +159,19 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
     //#region Image Generate 
     private onImageGenerate = async(text:string) => {
         this.setState({...this.state, message:"Afbeelding word gegenereerd...."})
-        const response = await this.getOpenAIInstance()?.getImage(text);
+        try
+        {
 
-        const uriOut = response?.data.data[0].url;
-        if(uriOut)
-            this.setState({...this.state, generated: [{text:text, uri: uriOut}, ...this.state.generated], message: "Afbeelding met success aangemaakt!"})
-        else this.setState({...this.state, error:"Er ging iets mis tijdens het genereren van de afbeelding", message: ""})
+            const response = await this.getOpenAIInstance()?.getImage(text);
+
+            const uriOut = response?.data.data[0].url;
+            if(uriOut)
+                this.setState({...this.state, generated: [{text:text, uri: uriOut}, ...this.state.generated], message: "Afbeelding met success aangemaakt!"})
+            else this.setState({...this.state, error:"Er ging iets mis tijdens het genereren van de afbeelding", message: ""})
+        } catch(e)
+        {
+            this.setState({...this.state, error: "Verkeerde OpenAI API code", message: ""});
+        }
     }
     //#endregion
     
@@ -181,9 +188,8 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
     public render = (): React.ReactNode => {
         if(this.getOpenAIInstance() && this.state.page === "no_key") 
         {
-            
-        }
             this.setState({...this.state, page: "main"});
+        }
 
         return this.renderSubPage();
     }
