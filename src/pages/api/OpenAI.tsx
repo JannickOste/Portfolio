@@ -7,8 +7,7 @@ import ChatUI from "../../components/elements/groups/openai/chat/ChatUI";
 import ImageGeneratorUI, { ImageGeneratorResult } from "../../components/elements/groups/openai/image/ImageGeneratorUI";
 import OpenAINoKey from "../../components/elements/groups/openai/OpenAINoKey";
 import Message, { MessageLevel } from "../../components/elements/Message";
-import SubpageLoader, { MAIN_MENU_LABEL as SUBPAGE_MAIN_MENU_LABEL, SlimRouteProps, SubPageLayoutComponentProps } from "../../components/elements/SubpageLoader";
-import VerticalMenu from "../../components/elements/VerticalMenu";
+import SubpageLoader, { SUBPAGE_MAIN_MENU_LABEL, SlimRouteProps, SubPageLayoutComponentProps } from "../../components/elements/SubpageLoader";
 
 type ChatProps = {}
 type ChatState = {
@@ -31,7 +30,7 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
     private readonly subPages: SlimRouteProps[] = [
         {
             path: "chat",
-            text: "chat",
+            text: "openai chat",
             element: () => <ContentBox content={<ChatUI messages={ this.state.messages } onSend={(text) => {
                 const messagesUpdates: ChatMessageProps[] = [...this.state.messages, {from: "Human", message:text}]
                 this.setState({...this.state, messages: messagesUpdates}, this.onChatMessageSend)
@@ -60,14 +59,11 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
             <ContentBox content={<p className="h1 text-center mb-2">OpenAI {text}</p>} />
 
 
-            <Message level={MessageLevel.SUCCES} content={<>
-                Ingelogd met een persoonlijke token - <u style={{cursor:"pointer"}} onClick={() => {
-                    localStorage.setItem("openai_key", "");
-                    localStorage.setItem("openai_limit", "");
-                    this.setState({...this.state, openaiUserKey: undefined, openaiUserLimit: undefined, error:""})
-                }}>Uitloggen</u>
+            <Message level={MessageLevel.SUCCES} className="my-2" content={<>
+                Ingelogd met een persoonlijke token - <u style={{cursor:"pointer"}} onClick={this.onTokenReset}>Uitloggen</u>
                 
             </>} />
+
             {this.state.error ? <Message level={MessageLevel.ERROR} content={this.state.error} /> : <></>}
             {this.state.message ? <Message level={MessageLevel.SUCCES} content={this.state.message} /> : <></>}
         </>)
@@ -77,25 +73,27 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
     {
         return (({path, triggerMainMenu}: SubPageLayoutComponentProps) => <>
             {path === SUBPAGE_MAIN_MENU_LABEL ?  <></> :<ContentBox className="d-flex justify-content-end" content={<>
-                <input type="button" className="btn btn-success d-block ml-auto" onClick={() => {
-                    this.setState({...this.state, error:""})
-                    triggerMainMenu();
-                }} value="Hoofdmenu" />
+                <input type="button" className="btn btn-success d-block ml-auto" onClick={() => this.onMainMenuReturn(triggerMainMenu)} value="Hoofdmenu" />
             </>} />}
         </>)
     }
 
 
 
-    //#region ChatUI
-    /**
-     * Updates the chat history and sends a message to the OpenAI API
-     *
-     * This method retrieves the last message in the chat history and
-     * checks if it was sent by the human user. If so, it calls the
-     * `fetchAPIChatResponse` method to retrieve a response from the
-     * OpenAI API and update the chat history.
-     */
+    //#region Component Events
+    private onMainMenuReturn = (trigger: () => void) => {
+        this.setState({...this.state, error:""})
+
+        trigger();
+    }
+
+    private onTokenReset = () => {
+        localStorage.setItem("openai_key", "");
+        localStorage.setItem("openai_limit", "");
+
+        this.setState({...this.state, openaiUserKey: undefined, openaiUserLimit: undefined, error:""})
+    }
+
     private onChatMessageSend = async() => {
         const last = this.state.messages.at(-1);
 
@@ -156,16 +154,6 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
     }
     //#endregion
     
-    /**
-     * Renders the current page of the OpenAI chat UI
-     *
-     * If the user has not provided an OpenAI API key and credit limit,
-     * the `ChatNoKeyForm` component is rendered. Otherwise, the
-     * `renderSubPage` method is called to render the appropriate
-     * sub-page of the chat UI.
-     *
-     * @returns {React.ReactNode} The React element to render
-     */
     public render = (): React.ReactNode => {
         if(!this.openai) 
             return (<ContentBox content={(

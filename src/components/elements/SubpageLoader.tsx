@@ -19,10 +19,10 @@ export type SubpageLoaderProps = {
 }
 
 
-export const MAIN_MENU_LABEL = "";
+export const SUBPAGE_MAIN_MENU_LABEL = "";
 export default class SubpageLoader extends React.Component <SubpageLoaderProps, {currentPage: string}>
 {
-    state = {currentPage: MAIN_MENU_LABEL}
+    state = {currentPage: SUBPAGE_MAIN_MENU_LABEL}
     
 
 
@@ -44,20 +44,20 @@ export default class SubpageLoader extends React.Component <SubpageLoaderProps, 
             route = this.props.pages.find(route => route.path === this.state.currentPage);
             if(!route) 
                 route = {text: "", path: "page_not_found", element: () => <ContentBox header="Er ging iets fout tijdens het ophalen van de pagina" content={<>
-                    Klik <u style={{cursor: "pointer"}} onClick={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}>hier</u> om terug naar het hoofdmenu te gaan...
+                    Klik <u style={{cursor: "pointer"}} onClick={() => this.setState({...this.state, currentPage: SUBPAGE_MAIN_MENU_LABEL})}>hier</u> om terug naar het hoofdmenu te gaan...
                 </>} /> }
             
             Body = route.element;
         }
         
         return (<>
-            {Header ? <Header text={(route?.text ? route.text : "")} path={(route?.path ? route.path : "")} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
+            {Header ? <Header text={(route?.text ? route.text : "")} path={(route?.path ? route.path : "")} triggerMainMenu={() => this.setState({...this.state, currentPage: SUBPAGE_MAIN_MENU_LABEL})}  /> : <></>}
 
             <div className="my-3">
                 <Body />
             </div>
 
-            {Footer ? <Footer text={(route?.text ? route.text : "")} path={(route?.path ? route.path : "")} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
+            {Footer ? <Footer text={(route?.text ? route.text : "")} path={(route?.path ? route.path : "")} triggerMainMenu={() => this.setState({...this.state, currentPage: SUBPAGE_MAIN_MENU_LABEL})}  /> : <></>}
         </>)
     }
 }
