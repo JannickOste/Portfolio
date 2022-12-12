@@ -18,7 +18,7 @@ export default class Message extends React.Component<{
     public render = (): React.ReactNode => {
 
         return (<ContentBox className={this.props.className} content={
-            <div className={`border bg-${this.props.level} text-white text-center py-2`}>
+            <div className={`border bg-${this.props.level} text-${[MessageLevel.WARNING].includes(this.props.level) ? "dark" : "light"} text-center py-2`}>
                 {this.props.text}
             </div>
         } />);

@@ -2,18 +2,30 @@ import React from "react";
 import ContentBox from "./ContentBox";
 import VerticalMenu from "./VerticalMenu";
 
-type SlimRouteProps = {path:string; text:string; element:() => JSX.Element }
+export type SlimRouteProps = {path:string; text:string; element:() => JSX.Element }
+
+export type SubPageLayoutComponentProps = {
+    text?:string;
+    path?:string;
+    triggerMainMenu?:()=>void
+}
+
 export type SubpageLoaderProps = {
-    header?: () => JSX.Element;
-    footer?: () => JSX.Element;
+    header?: (props: SubPageLayoutComponentProps) => JSX.Element;
+    footer?: (props: SubPageLayoutComponentProps) => JSX.Element;
 
     pages:SlimRouteProps[]
     routeFilters?:string[];
 }
 
+
+const MAIN_MENU_LABEL = "";
 export default class SubpageLoader extends React.Component <SubpageLoaderProps, {currentPage: string}>
 {
-    state = {currentPage: ""}
+    state = {currentPage: MAIN_MENU_LABEL}
+    
+
+
     public render = (): React.ReactNode =>
     {
         const {Header, Footer} = {Header: this.props.header, Footer: this.props.footer}   
@@ -26,25 +38,26 @@ export default class SubpageLoader extends React.Component <SubpageLoaderProps, 
             }
         )} />
 
+        let route = null;
         if(this.state.currentPage.length)
         {
-            let route = this.props.pages.find(route => route.path === this.state.currentPage);
+            route = this.props.pages.find(route => route.path === this.state.currentPage);
             if(!route) 
                 route = {text: "", path: "page_not_found", element: () => <ContentBox header="Er ging iets fout tijdens het ophalen van de pagina" content={<>
-                    Klik <u style={{cursor: "pointer"}} onClick={() => this.setState({...this.state, currentPage: ""})}>hier</u> om terug naar het hoofdmenu te gaan...
+                    Klik <u style={{cursor: "pointer"}} onClick={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}>hier</u> om terug naar het hoofdmenu te gaan...
                 </>} /> }
             
             Body = route.element;
         }
-
+        
         return (<>
-            {Header ? <Header /> : <></>}
+            {Header ? <Header text={route?.text} path={route?.path} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
 
             <div className="my-3">
                 <Body />
             </div>
 
-            {Footer ? <Footer /> : <></>}
+            {Footer ? <Footer text={route?.text} path={route?.path} triggerMainMenu={() => this.setState({...this.state, currentPage: MAIN_MENU_LABEL})}  /> : <></>}
         </>)
     }
 }

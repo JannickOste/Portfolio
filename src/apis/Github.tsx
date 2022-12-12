@@ -145,10 +145,20 @@ export type GithubRepositoryOwner = {
   site_admin?: boolean;
 }
 
+interface GithubRepositorySearchResult {
+  total_count: number;
+  incomplete_results: boolean;
+  items: GithubAPIRepositoryResult[];
+}
+
+export
+
+
 class GithubAPI 
 {
     static getProfile      = async(name:string): Promise<GithubProfileAPIResult>      => await (await fetch(`https://api.github.com/users/${name}`)).json();
-    static getRepositories = async(name:string): Promise<GithubAPIRepositoryResult[]> => await (await fetch(`https://api.github.com/users/${name}/repos`)).json();
+    static getProfileRepositories = async(name:string): Promise<GithubAPIRepositoryResult[]> => await (await fetch(`https://api.github.com/users/${name}/repos`)).json();
+    static searchRepository = async(query:string): Promise<GithubRepositorySearchResult> => await (await fetch(`https://api.github.com/search/repositories?q=${query}`)).json()
     static sanitizeDate = (input:string|undefined) => input?.split("T").map((s: string) => s.split("-").join(" ").replace("Z", "")).join(" - ");
 
     static stringToDate = (dateString: string|undefined) => { // Doesnt return correct output when returning out, gotta look into

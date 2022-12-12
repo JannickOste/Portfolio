@@ -180,6 +180,9 @@ export default class OpenAIPage extends React.Component<ChatProps, ChatState>
      */
     public render = (): React.ReactNode => {
         if(this.getOpenAIInstance() && this.state.page === "no_key") 
+        {
+            
+        }
             this.setState({...this.state, page: "main"});
 
         return this.renderSubPage();

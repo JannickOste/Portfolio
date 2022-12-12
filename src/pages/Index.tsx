@@ -49,7 +49,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
         try
         {
             this.setState({...this.state, 
-                repositories: await GithubAPI.getRepositories(process.env.REACT_APP_AUTHOR_GITHUB_PROFILE as string), 
+                repositories: await GithubAPI.getProfileRepositories(process.env.REACT_APP_AUTHOR_GITHUB_PROFILE as string), 
                 profile: await GithubAPI.getProfile(process.env.REACT_APP_AUTHOR_GITHUB_PROFILE as string)
             })
         }
