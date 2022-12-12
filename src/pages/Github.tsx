@@ -108,9 +108,9 @@ export default class Github extends React.Component<{}, GithubUIState>
         <SearchBox 
             buttonText="Search" 
             onSubmit={this.onProfileSearch}
-            formClassName="row"
-            textboxClassName="col-sm-8"
-            buttonClassName="col-sm-4"
+            formClassName="row d-flex justify-content-between"
+            textboxClassName="col-7"
+            buttonClassName="col-3 btn btn-success"
             placeholder="Enter github profile name"
     /></>)} className="mb-2" />
 
@@ -141,7 +141,7 @@ export default class Github extends React.Component<{}, GithubUIState>
     private onRepoSearch = async(name:string) => {
         const repoResult = await GithubAPI.searchRepository(name);
         if(repoResult.total_count)
-            this.setState({...this.state, repositories: repoResult.items.slice(0, 50), error: ""})
+            this.setState({...this.state, repositories: repoResult.items.slice(0, this.entriesEachPage), error: ""})
         else this.setState({...this.state, error: "Geen resultaten gevonden voor de zoekopdracht: "+name})
     }
 
