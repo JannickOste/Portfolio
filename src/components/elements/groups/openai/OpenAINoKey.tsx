@@ -41,7 +41,7 @@ export default class OpenAINoKey extends React.Component<ChatNoKeyFormProps, Cha
                     <strong>Stap 2:</strong> Nadat je een account hebt aangemaakt, ga je naar de pagina met <a href="https://beta.openai.com/account/api-keys" title="API sleutels verkrijgen">API-sleutels</a> op de website van OpenAI. Klik op de knop om een nieuwe sleutel te genereren en volg de instructies op het scherm om dit te doen.
                 </div>
                 <div>
-                    <strong>Stap 3:</strong> Nadat je een API-sleutel hebt gegenereerd, kun je deze gebruiken om toegang te krijgen tot de diensten van OpenAI. Voer de sleutel in op het webplatform waar je de diensten van OpenAI wilt gebruiken en volg de instructies op het scherm om de integratie te voltooien.
+                    <strong>Stap 3:</strong> Nadat je een API-sleutel hebt gegenereerd, kun je deze gebruiken om toegang te krijgen tot de diensten van OpenAI. Voer de sleutel in op dit webplatform waar je de diensten van OpenAI kan gebruiken met mijn eigen implementatie.
                 </div>
             </pre>
 
