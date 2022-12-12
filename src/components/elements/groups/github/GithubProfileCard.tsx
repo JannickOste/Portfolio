@@ -1,5 +1,5 @@
 import React from "react";
-import GithubAPI, { GithubProfileAPIResult } from "../../../../apis/Github";
+import GithubAPI, { GithubProfileAPIResult } from "../../../../apis/GithubAPI";
 
 export type GithubProfileProps = {
     profile: GithubProfileAPIResult;

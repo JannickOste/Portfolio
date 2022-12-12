@@ -151,14 +151,11 @@ interface GithubRepositorySearchResult {
   items: GithubAPIRepositoryResult[];
 }
 
-export
-
-
-class GithubAPI 
+export default class GithubAPI 
 {
     static getProfile      = async(name:string): Promise<GithubProfileAPIResult>      => await (await fetch(`https://api.github.com/users/${name}`)).json();
     static getProfileRepositories = async(name:string): Promise<GithubAPIRepositoryResult[]> => await (await fetch(`https://api.github.com/users/${name}/repos`)).json();
-    static searchRepository = async(query:string): Promise<GithubRepositorySearchResult> => await (await fetch(`https://api.github.com/search/repositories?q=${query}`)).json()
+    static searchRepository = async(query:string): Promise<GithubRepositorySearchResult> => await (await fetch(`https://api.github.com/search/repositories?q=${query}&per_page=100`)).json()
     static sanitizeDate = (input:string|undefined) => input?.split("T").map((s: string) => s.split("-").join(" ").replace("Z", "")).join(" - ");
 
     static stringToDate = (dateString: string|undefined) => { // Doesnt return correct output when returning out, gotta look into
@@ -172,5 +169,3 @@ class GithubAPI
     return new Date(numeric);
     }
 }
-
-export default GithubAPI;

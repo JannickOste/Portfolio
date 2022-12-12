@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import GithubAPI, { GithubAPIRepositoryResult, GithubProfileAPIResult } from "../apis/Github";
+import GithubAPI, { GithubAPIRepositoryResult, GithubProfileAPIResult } from "../apis/GithubAPI";
 import GithubRepoCard from "../components/elements/groups/github/GithubRepoCard";
 import { SkillBarProps } from "../components/elements/groups/skills/SkillBar";
 import SkillDisplay from "../components/elements/groups/skills/SkillDisplay";

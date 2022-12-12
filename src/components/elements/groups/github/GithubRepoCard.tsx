@@ -1,5 +1,5 @@
 import React from "react";
-import  { GithubAPIRepositoryResult } from "../../../../apis/Github"
+import  { GithubAPIRepositoryResult } from "../../../../apis/GithubAPI"
 
 type GithubRepoCardProps = { repo: GithubAPIRepositoryResult}
 type GithubRepoCardState = { hover:boolean; }

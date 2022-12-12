@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GithubAPI, { GithubAPIRepositoryResult, GithubProfileAPIResult } from "../../apis/Github";
+import GithubAPI, { GithubAPIRepositoryResult, GithubProfileAPIResult } from "../../apis/GithubAPI";
 import SearchBox from "../../components/elements/SearchBox";
 import GithubProfileCard from "../../components/elements/groups/github/GithubProfileCard";
 import GithubRepoCard from "../../components/elements/groups/github/GithubRepoCard";
