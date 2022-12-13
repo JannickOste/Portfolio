@@ -19,24 +19,23 @@ export default class Pager extends React.Component<PagerProps, PagerState>
         // Todo: add proper indexing for menu
         const pages = this.props.elements.length/this.props.elementsEachPage;
         
-        const menuWidth = [... Array(pages).keys()];
+        const menuWidth = [1, ... [... Array(pages).keys()].map((s, i) => i+this.state.currentPage).filter(v => v > 1 && v < pages && v >= this.state.currentPage-2 && v <= this.state.currentPage+2 ), pages]
+
         return (
             <>
                 {this.props.elements.slice(this.state.currentPage*this.props.elementsEachPage, (this.state.currentPage+1)*this.props.elementsEachPage)}
                 <ContentBox className="row d-flex justify-content-center" content={<div className="col-3 d-flex justify-content-between">
-                    {[0, ...[...menuWidth].filter(i => i > 0 && i < pages)].map((n, i) => {
-                        const index = i !== 0 && i !== menuWidth.length ? (n+1) : n+1;
+                    {menuWidth.map((n, i) => {
                         const onClick = (ev: any) => {
-                            this.setState({...this.state, currentPage: parseInt(ev.currentTarget.textContent as string)-1});
+                            this.setState({...this.state, currentPage:   parseInt(ev.currentTarget.textContent as string)-1});
                         }
                         
                         return (
                             <>
-                            
-                            {n === this.state.currentPage 
-                                ? <u>{index}</u>
+                            {n === this.state.currentPage+1
+                                ? <u>{n}</u>
                             : <span key={i} onClick={onClick} style={{cursor:"pointer"}} >
-                                {(index)}
+                                {(n)}
                             </span>}        
                             </>
     
