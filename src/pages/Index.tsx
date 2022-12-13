@@ -96,7 +96,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
                 )} />
 
 
-                <ContentBox header="Laaste 5 geupdate repositories" className="mt-sm-5" content={(
+                <ContentBox header="Laaste 5 geupdate repositories" className="mt-sm-5 mt-xs-5" content={(
                     <>
                         {this.state.repoError ? <>Er ging iets miss bij het laden van de github data...</> : <></>}
                         {this.state.repositories.sort((a, b) => GithubAPI.stringToDate(a.updated_at as string).getTime() < GithubAPI.stringToDate(b.updated_at as string).getTime() ? 1 : -1).slice(0, 5).map(repo => (<GithubRepoCard repo={repo} />))}
@@ -105,7 +105,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
             </div>
 
             <div className="col-lg-5 w-md-100 d-flex justify-content-between flex-column">
-                <ContentBox header="Github statistieken" content={(
+                <ContentBox header="Github statistieken" className="mt-sm-5 mt-md-0" content={(
                         <>
                         <div className="row">
                             <p className="col-4"><u>Publieke repositories</u>:</p>
@@ -121,7 +121,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
                 )} />
 
                 {this.props.skills.map((display, rootI) => {
-                    return (<ContentBox key={rootI} header={display.name} className={`w-md-100 w-100 mt-sm-5`} content={(<SkillDisplay skills={display.entries} />)} />)
+                    return (<ContentBox key={rootI} header={display.name} className={`w-md-100 w-100 mt-sm-5 mt-xs-5`} content={(<SkillDisplay skills={display.entries} />)} />)
                 })}
             </div>
 

@@ -47,6 +47,7 @@ export default class Github extends React.Component<{}, GithubUIState>
                         />
                     </>} />
                     
+                    {this.state.repositories?.length ? 
                     <Pager
                         elementsEachPage={10}
                         elements={
@@ -55,7 +56,7 @@ export default class Github extends React.Component<{}, GithubUIState>
                                 <div className="col-1 d-flex justify-content-center align-self-center" style={{height: "100%"}}>#{i+1}</div>
                                 <div className="col-10"><GithubRepoCard repo={repo} /></div>
                             </div>
-                    }/>)} />
+                    }/>)} /> : <></>}
                 </> 
             }
         ]
