@@ -21,6 +21,7 @@ type GithubUIState = {
 }
 
 
+// SubpageLoader.
 export default class Github extends React.Component<{}, GithubUIState>
 {
     state:GithubUIState = {}
@@ -38,7 +39,7 @@ export default class Github extends React.Component<{}, GithubUIState>
                 element: () => <>
                     <ContentBox content={<>
                         <SearchBox 
-                            onSubmit={this.onRepoSearch} 
+                            onSubmit={this.onRepoSearchEvent} 
                             buttonText="Zoeken" 
                             placeholder="Zoek een github repository..."
                             formClassName="row d-flex justify-content-between"
@@ -90,7 +91,7 @@ export default class Github extends React.Component<{}, GithubUIState>
     private getProfileSearchHeader = () => <ContentBox content={(<>
         <SearchBox 
             buttonText="Search" 
-            onSubmit={this.onProfileSearch}
+            onSubmit={this.onProfileSearchEvent}
             formClassName="row d-flex justify-content-between"
             textboxClassName="col-7"
             buttonClassName="col-3 btn btn-success"
@@ -107,25 +108,6 @@ export default class Github extends React.Component<{}, GithubUIState>
         </>
     )
 
-     private onProfileSearch = async(name:string) => {
-        const profileResult = await GithubAPI.getProfile(name);
-        if(profileResult.message) // error message found?
-            return this.setState({...this.state, error: profileResult.message});
-        
-        const repositoryResult = await GithubAPI.getProfileRepositories(name);
-        this.setState({...this.state, profiles: [{
-            profile: profileResult,
-            repositories: repositoryResult
-        }, ...this.state.profiles ? this.state.profiles : []]});
-    }
-
-    private onRepoSearch = async(name:string) => {
-        const repoResult = await GithubAPI.searchRepository(name);
-        if(repoResult.total_count)
-            this.setState({...this.state, repositories: repoResult.items, error: ""})
-        else this.setState({...this.state, error: "Geen resultaten gevonden voor de zoekopdracht: "+name})
-    }
-
     private getGithubProfileElements = () => (this.state.profiles?.length 
     ? this.state.profiles.map((v, i) => 
         <ContentBox key={i} className="mt-2" content={(
@@ -137,6 +119,25 @@ export default class Github extends React.Component<{}, GithubUIState>
             </React.Fragment>)} 
         />
     ) : [<></>]);
+    
+     private onProfileSearchEvent = async(name:string) => {
+        const profileResult = await GithubAPI.getProfile(name);
+        if(profileResult.message) // error message found?
+            return this.setState({...this.state, error: profileResult.message});
+        
+        const repositoryResult = await GithubAPI.getProfileRepositories(name);
+        this.setState({...this.state, profiles: [{
+            profile: profileResult,
+            repositories: repositoryResult
+        }, ...this.state.profiles ? this.state.profiles : []]});
+    }
+
+    private onRepoSearchEvent = async(name:string) => {
+        const repoResult = await GithubAPI.searchRepository(name);
+        if(repoResult.total_count)
+            this.setState({...this.state, repositories: repoResult.items, error: ""})
+        else this.setState({...this.state, error: "Geen resultaten gevonden voor de zoekopdracht: "+name})
+    }
 
     public render = (): React.ReactNode => {
         return (<SubpageLoader header={this.pageHeader} pages={this.pageMapping} footer={this.pageFooter} />)

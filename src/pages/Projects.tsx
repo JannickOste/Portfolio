@@ -20,7 +20,7 @@ export default class Projects extends React.Component<ProjectsProps>
         <section>
             <ContentBox content={(<>Klik op een hoofding om de info en het project te weergeven.</>)}/>
             
-            {this.props.projects.map((v, i) => <ProjectInfo name={v.name} description={v.description} renderElement={v.renderElement} sourceUri={v.sourceUri}/>)}
+            {this.props.projects.map((v, i) => <ProjectInfo key={i} name={v.name} description={v.description} renderElement={v.renderElement} sourceUri={v.sourceUri}/>)}
         </section>
     )
 }

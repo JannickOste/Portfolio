@@ -14,6 +14,10 @@ import { SkillBarProps } from './components/elements/groups/skills/SkillBar';
 import { RouteObjectExtended } from './RoutedObjectExtended';
 import Application from './App';
 import OpenAIPage from './pages/api/OpenAI';
+import { CounterList } from './components/projects/CounterList';
+import Slotmachine from './components/projects/SlotMachine';
+import { TicTacToe } from './components/projects/TicTacToe';
+import Filtering from './components/projects/Filtering';
 
 //#region Application data.
 const projectDetails: ProjectInfoProps[] = [
@@ -40,6 +44,30 @@ const projectDetails: ProjectInfoProps[] = [
       description: `Deze code is een voorbeeld van een React component genaamd Pokemon. Het maakt gebruik van het useEffect hook om de fetch API te gebruiken om gegevens van Pokémon op te halen vanaf de PokeAPI. De component heeft ook een input veld waar gebruikers de naam van een Pokémon kunnen invoeren om de lijst te filteren op Pokémon met die naam. Er zijn ook twee input velden waarmee gebruikers het startnummer en het aantal Pokémon dat opgehaald moet worden kunnen aanpassen. De component toont vervolgens een lijst met Pokémon die voldoen aan de filtercriteria. De state van de component wordt bewaard in het state object en gebruikt useState om te updaten wanneer de gebruiker input invoert.`,
       renderElement: <Pokemon />,
       sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Pokemon.tsx"
+  },
+  {
+      name: "Teller lijst",
+      description: `Deze code definieert een React component genaamd CounterList. Het component bevat een lijst van tellers die de gebruiker kan verhogen of verlagen. Het component bevat ook een knop om nieuwe tellers toe te voegen aan de lijst.De component gebruikt een state genaamd counters om bij te houden welke waarden de tellers hebben. De component gebruikt ook de useState hook uit React om de state te beheren en te updaten. Als een gebruiker een teller verhoogt of verlaagt, dan zal de component de waarde van de counters state bijwerken met de nieuwe waarde van de teller. Als een gebruiker een nieuwe teller toevoegt, dan zal de component de counters state bijwerken met een nieuw element met een waarde van 0.De component berekent ook de totale waarde van alle tellers door alle waarden in de counters state op te tellen. De totale waarde wordt getoond onder de lijst van tellers. Als de totale waarde groter dan 0 is, dan wordt deze weergegeven in het groen. Als de totale waarde kleiner dan`,
+      renderElement: <CounterList />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/CounterList.tsx"
+  },
+  {
+      name: "Slot machine",
+      description: `Deze code definieert een React component genaamd Slotmachine. Het component simuleert een kansspel waarbij de gebruiker een aantal slots kan laten draaien en geld kan winnen of verliezen. De component bevat drie slots die afbeeldingen tonen van kersen, citroenen, meloenen, pruimen en zevens. De component bevat ook een knop waarmee de gebruiker de slots kan laten draaien.De component gebruikt een state genaamd slots om bij te houden welke afbeeldingen getoond worden op de drie slots. Het component gebruikt ook de useState hook uit React om de state te beheren en te updaten. Als de slots gedraaid worden, zal de component geld toevoegen of afnemen van de huidige hoeveelheid geld van de gebruiker, afhankelijk van of de gebruiker gewonnen of verloren heeft. De hoeveelheid geld wordt bijgehouden in de state money. De component gebruikt ook de useEffect hook om de hoeveelheid geld te updaten wanneer de waarde van de slots state verandert.`,
+      renderElement: <Slotmachine />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/SlotMachine.tsx"
+  },
+  {
+      name: "TicTacToe",
+      description: `Deze code definieert een React component genaamd TicTacToe. Het component bevat een 3-op-een-rij spel waarbij twee spelers om de beurt X of 0 op het bord kunnen plaatsen. Als een speler drie van zijn of haar symbolen op een rij (horizontaal, verticaal of diagonaal) krijgt, dan wint de speler. Als het bord vol is en niemand drie symbolen op een rij heeft, dan is het spel gelijkspel. De component gebruikt een state genaamd board om bij te houden welke symbolen op het bord getoond worden. De component gebruikt ook de useState hook uit React om de state te beheren en te updaten. Als een speler een zet doet, zal de component de waarde van de board state bijwerken met het symbool van de speler op de gekozen locatie.De component gebruikt de useEffect hook om te controleren of er een winnaar is na elke zet. Als er een winnaar is, dan wordt de winner state bijgewerkt met het symbool van de winnaar. Als er geen winnaar is en het bord vol is, dan is het spel gelijkspel.`,
+      renderElement: <TicTacToe />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/TicTacToe.tsx"
+  },
+  {
+      name: "Filtering",
+      description: `Deze code definieert een React component genaamd Filtering. Het component bevat een lijst van studenten met de naam, leeftijd en studiejaar als properties. Het component bevat ook een search input waar de gebruiker naar de naam van de studenten kan zoeken. Als de gebruiker typt in de search input, zal de lijst gefilterd worden op de naam van de studenten. Als er op de header van de tabel geklikt wordt, zal de lijst gesorteerd worden op de property waarop geklikt is.De code gebruikt twee states: sortField en searchText. De eerste state bevat de property waarop gesorteerd moet worden, en de tweede state bevat de tekst die gebruikt wordt om te filteren. De component is gemaakt met behulp van de useState hook uit React.`,
+      renderElement: <Filtering />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Filtering.tsx"
   }
 ]
 

@@ -32,14 +32,14 @@ export default class Header extends React.Component<HeaderProps, HeaderState>
                     <ul className="navbar-nav mr-auto">    
                     {this.props.navigation.map((v, i) => {
                         if(v.children && v.children.length)
-                            return (<li className="nav-item dropdown">
+                            return (<li className="nav-item dropdown" key={i}>
                                     <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {v.text}
                                     </a>
 
                                     
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {v.children.map((sv, si) => (<Link className="dropdown-item" to={sv.path as string}>{(sv as RouteObjectExtended).text}</Link>))}
+                                        {v.children.map((sv, si) => (<Link key={si} className="dropdown-item" to={sv.path as string}>{(sv as RouteObjectExtended).text}</Link>))}
                                         
                                     </div>
                             </li>)
