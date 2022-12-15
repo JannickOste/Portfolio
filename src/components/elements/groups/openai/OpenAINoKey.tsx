@@ -17,15 +17,19 @@ export default class OpenAINoKey extends React.Component<ChatNoKeyFormProps, Cha
 {
     state:ChatNoKeyFormState = {creditLimit: 150}
 
-    constructor(props: ChatNoKeyFormProps) { super(props); }
-
     private onApiKeyChange = (text: string) => this.setState({...this.state, apiKey: text});
     private onSubmit = (ev: any): void => {
         ev.preventDefault();
         if(this.state.apiKey)
             this.props.onSubmit(this.state.apiKey, this.state.creditLimit)
-
     }
+
+    //useEffect(() =>, []) equivalent 
+    componentDidMount = (): void => {
+        if(this.props.apiKey && this.props.limit)
+            this.props.onSubmit(this.props.apiKey, parseInt(this.props.limit))
+    }
+
     public render = (): React.ReactNode => {
         return (<>
             <div className="bg-danger p-2 text-white text-center mb-2">
