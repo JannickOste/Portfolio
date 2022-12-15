@@ -6,6 +6,7 @@ import { SkillBarProps } from "../components/elements/groups/skills/SkillBar";
 import SkillDisplay from "../components/elements/groups/skills/SkillDisplay";
 import ContentBox from "../components/elements/ContentBox";
 import Message, { MessageLevel } from "../components/elements/Message";
+import GithubProfileCard from "../components/elements/groups/github/GithubProfileCard";
 
 
 type IndexProps = {
@@ -72,11 +73,10 @@ export default class Index extends React.Component<IndexProps, IndexState>
      * @returns The JSX for the `Index` component.
      */
     public render = (): React.ReactNode => {
-        
         return (
             <div className="row-lg d-md-flex justify-content-lg-between flex-md-column flex-lg-row">
             <div className="col-lg-6 d-lg-flex flex-column justify-content-between">
-                <Message level={MessageLevel.WARNING} content="Website in development, features zullen nog wijzigen!" className="mb-5" />
+                {process.env.REACT_APP_DEV_MODE === "true" ? <Message level={MessageLevel.WARNING} content="Website in development, features zullen nog wijzigen!" className="mb-5" /> : <></>}
                 <ContentBox header="Introductie"content={(
                     <>
                     <img src="./me.png" about="Author image" className="d-none d-xl-block  float-md-end"  />
@@ -105,20 +105,7 @@ export default class Index extends React.Component<IndexProps, IndexState>
             </div>
 
             <div className="col-lg-5 w-md-100 d-flex justify-content-between flex-column">
-                <ContentBox header="Github statistieken" className="mt-sm-5 mt-md-0" content={(
-                        <>
-                        <div className="row">
-                            <p className="col-4"><u>Publieke repositories</u>:</p>
-                            <p className="col-4"><u>Volgers</u>:</p>
-                            <p className="col-4"><u>Gebruikers sinds</u></p>
-                        </div>
-                        <div className="row">
-                            <p className="col-4">{this.state.profile?.public_repos}</p>
-                            <p className="col-4">{this.state.profile?.followers}</p>
-                            <p className="col-4">{this.state.profile ? GithubAPI.stringToDate(this.state.profile?.created_at as string).toLocaleDateString() : ""}</p>
-                        </div>
-                        </>
-                )} />
+                {this.state.profile ? <ContentBox header="Github statistieken" content={<GithubProfileCard profile={this.state.profile} noAvatar={true} />} /> : <></>}
 
                 {this.props.skills.map((display, rootI) => {
                     return (<ContentBox key={rootI} header={display.name} className={`w-md-100 w-100 mt-sm-5 mt-xs-5`} content={(<SkillDisplay skills={display.entries} />)} />)

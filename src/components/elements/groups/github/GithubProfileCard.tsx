@@ -3,6 +3,7 @@ import GithubAPI, { GithubProfileAPIResult } from "../../../../apis/GithubAPI";
 
 export type GithubProfileProps = {
     profile: GithubProfileAPIResult;
+    noAvatar?:boolean;
 }
 
 export default class GithubProfileCard extends React.Component<GithubProfileProps>
@@ -22,10 +23,10 @@ export default class GithubProfileCard extends React.Component<GithubProfileProp
 
     public render = (): React.ReactNode => (
         <>
-        <div className="row border rounded p-5">
-            <div className="col-md-3 col-sm-12 d-relative">
+        <div className="row border rounded p-5 d-flex justify-content-center">
+            {this.props.noAvatar ? <></> : <div className="col-md-3 col-sm-12 d-relative">
                 <img src={this.props.profile.avatar_url} className="rounded mx-auto w-100 d-block"  />
-            </div>
+            </div>}
 
             <div className="col-md-9 col-sm-12 text-center">
                 <strong className="row mb-2 d-block h1 mt-3">{this.props.profile.name}</strong>
