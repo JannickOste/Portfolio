@@ -85,6 +85,10 @@ export default class Index extends React.Component<IndexProps, IndexState>
                         Beste bezoeker van mijn portfolio,<br /><br />
                         Mijn naam is Oste Jannick en ik ben een voormalige hobbyistische software-ontwikkelaar die nu studeert aan de AP in Antwerpen om mijn passie voor programmeren te volgen en mijn droom om hiervan mijn werk te maken te verwezenlijken. In het verleden heb ik al ervaring opgedaan met verschillende programmeertalen, zoals HTML, CSS, JavaScript, TypeScript, PHP, C#, C++, Python en tot slote Java 
                         <br /><br />
+                        Naast mijn passie voor programmeren heb ik ook verschillende andere hobby's. Zo ben ik bijvoorbeeld een muziekliefhebber en geniet ik ervan om naar concerten te gaan en nieuwe muziek te ontdekken. Ook hou ik ervan om op reis te gaan en nieuwe plaatsen en culturen te ontdekken. Daarnaast ben ik ook geïnteresseerd in technologie en ben ik bezig met het maken van hobbyprojecten met Raspberry Pi's.
+                        <br /><br />
+Ik ben 27 jaar oud en heb ongeveer 4 jaar in Spanje gewoond voordat ik terugkeerde naar mijn geboorteplaats, Sint-Niklaas. Ik ben enthousiast om mijn vaardigheden verder te ontwikkelen en mezelf verder te verbeteren in mijn carrière als software-ontwikkelaar.
+                        <br /> <br />
                         In mijn portfolio kunt u enkele van mijn schoolprojecten bekijken, zoals mijn quizApp, mijn todo-lijst, mijn pokedex, mijn random dad joke, mijn slot machine en nog veel meer! Daarnaast kunt u meer te weten komen over mijn achtergrond en ervaring. Als u vragen heeft of interesse heeft om met mij samen te werken, aarzel dan niet om contact met mij op te nemen.
                         <br /><br />
                         Ik kijk ernaar uit om van u te horen.

@@ -18,6 +18,7 @@ import { CounterList } from './components/projects/CounterList';
 import Slotmachine from './components/projects/SlotMachine';
 import { TicTacToe } from './components/projects/TicTacToe';
 import Filtering from './components/projects/Filtering';
+import SnakeGame from './components/projects/SnakeGame';
 
 //#region Application data.
 const projectDetails: ProjectInfoProps[] = [
@@ -68,6 +69,12 @@ const projectDetails: ProjectInfoProps[] = [
       description: `Deze code definieert een React component genaamd Filtering. Het component bevat een lijst van studenten met de naam, leeftijd en studiejaar als properties. Het component bevat ook een search input waar de gebruiker naar de naam van de studenten kan zoeken. Als de gebruiker typt in de search input, zal de lijst gefilterd worden op de naam van de studenten. Als er op de header van de tabel geklikt wordt, zal de lijst gesorteerd worden op de property waarop geklikt is.De code gebruikt twee states: sortField en searchText. De eerste state bevat de property waarop gesorteerd moet worden, en de tweede state bevat de tekst die gebruikt wordt om te filteren. De component is gemaakt met behulp van de useState hook uit React.`,
       renderElement: <Filtering />,
       sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Filtering.tsx"
+  },
+  {
+      name: "Snake game",
+      description: `Het SnakeGameMainUI component is verantwoordelijk voor het weergeven van het hoofdmenu van een Snake-spel. Het component heeft twee props: setKeybinds en startGame, die respectievelijk functies zijn om de toetsenbordkoppelingen te wijzigen en het spel te starten. Het component heeft ook een optionele prop genaamd message, die een bericht weergeeft, en een prop genaamd keybindings, die een object bevat met de huidige toetsenbordkoppelingen. Het component heeft ook twee staten: currentPanel, dat een functie bevat die een JSX-element teruggeeft om te renderen, en keybindings, dat hetzelfde object bevat als de prop met dezelfde naam. Het component heeft twee functies voor het renderen van het hoofdmenu: mainUI en changeKeybindsUI. De eerste functie rendeert een knop om het spel te starten en een knop om de toetsenbordkoppelingen te wijzigen. De tweede functie rendeert een formulier waar de gebruiker de toetsenbordkoppelingen kan wijzigen en opslaan. Er is ook een type genaamd SnakeGameFood, dat een object representeert dat voedsel in het spel vertegenwoordigt. Het bevat de positie van het voedsel en het aantal \"ticks\" dat het voedsel nog heeft voordat het verdwijnt. Er is ook een type genaamd SnakeGameKeybindings, dat een object bevat met de huidige toetsenbordkoppelingen voor het spel.`,
+      renderElement: <SnakeGame />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/SnakeGame.tsx"
   }
 ]
 
