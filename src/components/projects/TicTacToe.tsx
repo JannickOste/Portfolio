@@ -7,7 +7,7 @@ type TicTacToeState = {
 
 export const TicTacToe = () => {
     const [state, setState] = useState<TicTacToeState>({board: [... Array(9).keys()].map(_ => "")});
-    const currentPlayer = state.board.reduce((prev, current) => prev+(current.length ? 1 : 0), 0)%2 ? "X" : "0";
+    const currentPlayer = state.board.reduce((prev, current) => prev+(current.length ? 1 : 0), 0)%2 ? "X" : "O";
     
     useEffect(() => {
         const iterator = [...Array(state.board.length/3).keys()];
@@ -22,7 +22,7 @@ export const TicTacToe = () => {
             {
                 const matches = state.board.filter((s, i) => subset.includes(i));
                 if(matches[0].length && matches.every(match => match[0]))
-                    setState({...state, winner: currentPlayer == "X" ? "0" : "X"})
+                    setState({...state, winner: currentPlayer == "X" ? "O" : "X"})
             }
         }
     }, [state.board]);
