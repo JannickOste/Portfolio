@@ -10,7 +10,7 @@ type PongCanvasState = {
     keybindings:PongKeybindings;
     
     bot:PongPlayer;
-    ball:{position:[number, number], direction: [-1|1, -1|0|1]}
+    ball:{position:[number, number], direction: [-2|2, -1|0|1]}
 
 }   
 
@@ -62,7 +62,7 @@ class PongCanvas extends React.Component<PongCanvasProps, PongCanvasState>
                 }, 
                 ball: {
                     position: [Math.floor(this.canvas.current.width/2), Math.floor(this.canvas.current.height/2)], 
-                    direction: [1, -1]
+                    direction: [2, -1]
                 }
             })
 
@@ -114,22 +114,17 @@ class PongCanvas extends React.Component<PongCanvasProps, PongCanvasState>
         const targetCanvas = this.canvas.current;
         if(targetCanvas)
         {
-            // Update positions 
-            const [ballDirectionX, ballDirectionY] = this.state.ball.direction;
-            let [newBallX, newBallY] = [
-                this.state.ball.position[0]-(ballDirectionX*this.ballVelocity), 
-                this.state.ball.position[1]-(ballDirectionY*this.ballVelocity)
-            ]
+            const ball = this.getNewBallPosition();
             
-            const ballToBotOffset = this.state.bot.yCenter-newBallY;
+            const ballToBotOffset = this.state.bot.yCenter-ball.position[1];
 
             this.setState({
                 ...this.state, 
-                ball: this.getNewBallPosition(),
+                ball: ball,
                 player: {...this.state.player, yCenter: this.state.player.yCenter+(this.state.player.directionOffset*this.playerVelocity)},
                 bot: {
                     ...this.state.bot,       
-                    yCenter: this.state.bot.yCenter+(ballDirectionX > 0 ? 0 : (ballToBotOffset > 0 ? -1 : (ballToBotOffset < 0 ? 1 : 0))*this.playerVelocity)
+                    yCenter: this.state.bot.yCenter+(ball.direction[0] > 0 || ball.position[0] < targetCanvas.width*.93 ? 0 : (ballToBotOffset > 0 ? -1 : (ballToBotOffset < 0 ? 1 : 0))*this.playerVelocity)
                 
                 },
             })
@@ -148,13 +143,13 @@ class PongCanvas extends React.Component<PongCanvasProps, PongCanvasState>
             current.direction = [ballDirectionX, 1];
 
         // Player colission
-        if(current.direction[0] == 1)
+        if(current.direction[0] == 2)
         {
             if(current.position[1] >= this.state.player.yCenter-(this.playerHeight/2)
                 && current.position[1] <= this.state.player.yCenter+(this.playerHeight/2)
                 && current.position[0] < this.playerWidth+this.playerWallOffset+(this.ballArea/2))
             {
-                current.direction = [-1, 
+                current.direction = [-2, 
                     current.position[1] > this.state.player.yCenter 
                         ? -1
                         : current.position[1] < this.state.player.yCenter ? 1 : 0
@@ -168,7 +163,7 @@ class PongCanvas extends React.Component<PongCanvasProps, PongCanvasState>
                 && current.position[1] <= this.state.bot.yCenter+(this.playerHeight/2)
                 && current.position[0] > (this.canvas.current?.width-this.playerWidth-this.playerWallOffset-(this.ballArea/2)))
             {
-                current.direction = [1, 
+                current.direction = [2, 
                     current.position[1] > this.state.bot.yCenter 
                         ? -1
                         : current.position[1] < this.state.bot.yCenter ? 1 : 0

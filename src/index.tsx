@@ -20,6 +20,7 @@ import { TicTacToe } from './components/projects/TicTacToe';
 import Filtering from './components/projects/Filtering';
 import SnakeGame from './components/projects/SnakeGame';
 import Pong from './components/projects/Pong';
+import GameOfLife from './components/projects/GameOfLife';
 
 //#region Application data.
 const projectDetails: ProjectInfoProps[] = [
@@ -31,13 +32,13 @@ const projectDetails: ProjectInfoProps[] = [
   }, 
   {
       name: "To-do lijst",
-      description: "De bovenstaande code is voor een to-do app. Het bevat drie componenten, TodoItem, TodoInput en TodoList, die respectievelijk een enkele taak, het invoerveld en de lijst met taken weergeven. De state van de to-do's bevindt zich in de TodoApp component en wordt doorgegeven aan de nieuwe componenten via props. Child-to-parent communicatie wordt gebruikt om de state te updaten. Elke component staat in een aparte bestand.",
+      description: `De opdracht betreft het maken van een Todo-applicatie in React. De opdracht begint met een voorgemaakte app die een lijst van taken bevat die toegevoegd en verwijderd kunnen worden. Er is ook een inputveld waarmee nieuwe taken kunnen worden toegevoegd. De opdracht vraagt om drie nieuwe componenten te maken: TodoList, TodoItem en TodoInput. TodoList bevat de lijst van taken, TodoItem bevat een enkele taak en TodoInput bevat het inputveld en de knop om een taak toe te voegen. De logica van de oorspronkelijke App component moet naar deze nieuwe componenten verplaatst worden. De state die de Todo's bevat, moet in de App component blijven en er moet gebruik gemaakt worden van props om de state door te geven aan de nieuwe componenten. Er moet ook gebruik gemaakt worden van child-to-parent communicatie om de state te kunnen updaten. Elk component moet in een aparte file staan. Aan het einde van de opdracht zal de Todo-applicatie bestaan uit vier componenten: App, TodoList, TodoItem en TodoInput. De App component bevat de state en zorgt voor de communicatie tussen de andere componenten, terwijl TodoList, TodoItem en TodoInput verantwoordelijk zijn voor het weergeven van de taken, het toevoegen van nieuwe taken en het bijhouden van de status van de taken.`,
       renderElement: <TodoApp />,
       sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Todo.tsx"
   },
   {
       name: "Dad Joke",
-      description: "De code is een React-component genaamd DadJoke. Deze component laadt een \"awkward dad joke\" van de API https://icanhazdadjoke.com/. De functie loadJoke is een functie die deze data ophaalt. De functie wordt opgeroepen wanneer het component geladen wordt. Dit gebeurt met behulp van de useEffect hook. Eenmaal de data geladen is, toont de component de joke in een <div> element met behulp van een kaartje. Er is ook een \"New Joke\" knop onder de joke die de gebruiker kan gebruiken om een nieuwe joke op te halen. Er is ook een knop \"Set as favorite\" die de huidige joke opslaat in de localStorage van de browser. Bij het opstarten van de applicatie, wordt de laatst opgeslagen joke getoond. Dit gebeurt met behulp van de useEffect hook.",
+      description: "De code is een React-component genaamd DadJoke. Deze component laadt een \"awkward dad joke\" van de API icanhazdadjoke. De functie loadJoke is een functie die deze data ophaalt. De functie wordt opgeroepen wanneer het component geladen wordt. Dit gebeurt met behulp van de useEffect hook. Eenmaal de data geladen is, toont de component de joke in een <div> element met behulp van een kaartje. Er is ook een \"New Joke\" knop onder de joke die de gebruiker kan gebruiken om een nieuwe joke op te halen. Er is ook een knop \"Set as favorite\" die de huidige joke opslaat in de localStorage van de browser. Bij het opstarten van de applicatie, wordt de laatst opgeslagen joke getoond. Dit gebeurt met behulp van de useEffect hook.",
       renderElement: <LocalStorage />,
       sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/LocalStorage.tsx"
   },
@@ -82,7 +83,14 @@ const projectDetails: ProjectInfoProps[] = [
       description: `De klasse PongCanvas is een React-component dat wordt gebruikt om een spel van pong te maken dat kan worden weergegeven op een HTML canvas. Het component bevat verschillende staten en functies om de spelers, het balletje en de spelregels te beheren en te updaten. Bij het inladen van het component worden event listeners toegevoegd voor het detecteren van toetsaanslagen van de gebruiker en de canvas wordt aangepast aan de grootte van het scherm. Er is ook een interval-functie geïmplementeerd die regelmatig wordt uitgevoerd om het spel te updaten en te renderen op de canvas.`,
       renderElement: <Pong />,
       sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Pong.tsx"
-  }
+  },
+  {
+      name: "Game of life",
+      description: `Dit is een implementatie van het Game of Life, een celautomaat ontwikkeld door de wiskundige John Horton Conway in 1970. Het is een simulatie van de evolutie van een bevolking cellen op een raster in de tijd, met elke cel die twee mogelijke staten heeft: levend of dood. De staat van elke cel in de volgende generatie wordt bepaald door de staten van zijn buren in de huidige generatie, volgens een set regels. De component gebruikt een canvas-element om de cellen weer te geven, en update de staat van de cellen op een bepaalde interval met behulp van een setInterval-methode. De functie tick berekent de nieuwe staat van de cellen op basis van de regels van het Game of Life, en de functie onCanvasUpdate tekent de cellen opnieuw op het canvas op basis van hun huidige staat. De component heeft ook een ref naar het canvas-element, wat het toelaat om toegang te krijgen tot het canvas en zijn context om erop te tekenen. Wanneer de component monteert, initialiseert het de cellen met willekeurige staten en start het de update-interval. Wanneer de component demontreert, wist het de interval om de updates te stoppen.`,
+      renderElement: <GameOfLife />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Pong.tsx"
+  },
+
 ]
 
 const skillDisplays: {name:string, entries:SkillBarProps[]}[] = [
