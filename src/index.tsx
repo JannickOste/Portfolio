@@ -88,7 +88,7 @@ const projectDetails: ProjectInfoProps[] = [
       name: "Game of life",
       description: `Dit is een implementatie van het Game of Life, een celautomaat ontwikkeld door de wiskundige John Horton Conway in 1970. Het is een simulatie van de evolutie van een bevolking cellen op een raster in de tijd, met elke cel die twee mogelijke staten heeft: levend of dood. De staat van elke cel in de volgende generatie wordt bepaald door de staten van zijn buren in de huidige generatie, volgens een set regels. De component gebruikt een canvas-element om de cellen weer te geven, en update de staat van de cellen op een bepaalde interval met behulp van een setInterval-methode. De functie tick berekent de nieuwe staat van de cellen op basis van de regels van het Game of Life, en de functie onCanvasUpdate tekent de cellen opnieuw op het canvas op basis van hun huidige staat. De component heeft ook een ref naar het canvas-element, wat het toelaat om toegang te krijgen tot het canvas en zijn context om erop te tekenen. Wanneer de component monteert, initialiseert het de cellen met willekeurige staten en start het de update-interval. Wanneer de component demontreert, wist het de interval om de updates te stoppen.`,
       renderElement: <GameOfLife />,
-      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Pong.tsx"
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/GameOfLife.tsx"
   },
 
 ]
