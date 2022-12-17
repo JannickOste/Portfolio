@@ -19,6 +19,7 @@ import Slotmachine from './components/projects/SlotMachine';
 import { TicTacToe } from './components/projects/TicTacToe';
 import Filtering from './components/projects/Filtering';
 import SnakeGame from './components/projects/SnakeGame';
+import Pong from './components/projects/Pong';
 
 //#region Application data.
 const projectDetails: ProjectInfoProps[] = [
@@ -75,6 +76,12 @@ const projectDetails: ProjectInfoProps[] = [
       description: `Het SnakeGameMainUI component is verantwoordelijk voor het weergeven van het hoofdmenu van een Snake-spel. Het component heeft twee props: setKeybinds en startGame, die respectievelijk functies zijn om de toetsenbordkoppelingen te wijzigen en het spel te starten. Het component heeft ook een optionele prop genaamd message, die een bericht weergeeft, en een prop genaamd keybindings, die een object bevat met de huidige toetsenbordkoppelingen. Het component heeft ook twee staten: currentPanel, dat een functie bevat die een JSX-element teruggeeft om te renderen, en keybindings, dat hetzelfde object bevat als de prop met dezelfde naam. Het component heeft twee functies voor het renderen van het hoofdmenu: mainUI en changeKeybindsUI. De eerste functie rendeert een knop om het spel te starten en een knop om de toetsenbordkoppelingen te wijzigen. De tweede functie rendeert een formulier waar de gebruiker de toetsenbordkoppelingen kan wijzigen en opslaan. Er is ook een type genaamd SnakeGameFood, dat een object representeert dat voedsel in het spel vertegenwoordigt. Het bevat de positie van het voedsel en het aantal \"ticks\" dat het voedsel nog heeft voordat het verdwijnt. Er is ook een type genaamd SnakeGameKeybindings, dat een object bevat met de huidige toetsenbordkoppelingen voor het spel.`,
       renderElement: <SnakeGame />,
       sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/SnakeGame.tsx"
+  },
+  {
+      name: "Pong",
+      description: `De klasse PongCanvas is een React-component dat wordt gebruikt om een spel van pong te maken dat kan worden weergegeven op een HTML canvas. Het component bevat verschillende staten en functies om de spelers, het balletje en de spelregels te beheren en te updaten. Bij het inladen van het component worden event listeners toegevoegd voor het detecteren van toetsaanslagen van de gebruiker en de canvas wordt aangepast aan de grootte van het scherm. Er is ook een interval-functie geïmplementeerd die regelmatig wordt uitgevoerd om het spel te updaten en te renderen op de canvas.`,
+      renderElement: <Pong />,
+      sourceUri: "https://github.com/JannickOste/Portfolio/blob/main/src/components/projects/Pong.tsx"
   }
 ]
 

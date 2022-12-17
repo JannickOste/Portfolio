@@ -23,9 +23,7 @@ export const TicTacToe = () => {
                 const matches = state.board.filter((s, i) => subset.includes(i));
                 
                 if(matches[0].length && matches.every(match => matches[0] == match))
-                {
                     setState({...state, winner: currentPlayer == "X" ? "O" : "X"})
-                }
             }
         }
     }, [state.board]);
